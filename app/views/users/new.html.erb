@@ -10,33 +10,8 @@
         </div>
     </div>
 
-    <%= form_for @user, url: signup_path do |f| %>
-
-      <%= render 'shared/error_messages' %>
-
-      <div class="form-group">
-        <%= f.label :name, class: "control-label" %>
-        <%= f.text_field :name, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :email, class: "control-label" %>
-        <%= f.email_field :email, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password, class: "control-label" %>
-        <%= f.password_field :password, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password_confirmation, "Password Confirmation", class: "control-label" %>
-        <%= f.password_field :password_confirmation, class: "form-control" %>
-      </div>
-
-      <%= f.submit "Sign Up", class: "btn btn-primary btn-lg btn-block" %>
-
-    <% end %>
+    <% provide( :button_text, 'Sign up' ) %>
+    <%= render 'form' %>
 
     <p>Have an account? <%= link_to "Log in", login_path %></p>
 

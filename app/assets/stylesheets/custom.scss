@@ -15,7 +15,7 @@ body
 
   > .container
   {
-    padding: 30px 15px 0;
+    padding: 20px 15px 0;
   }
 }
 
@@ -42,6 +42,16 @@ body
 .container .text-muted
 {
   margin: 20px 0;
+}
+
+.list-group-item > .gravatar
+{
+  margin-right: 10px;
+}
+
+div.pagination
+{
+  margin-top: 0px;
 }
 
 /* Forms */

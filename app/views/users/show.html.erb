@@ -2,8 +2,12 @@
 
 <div class="span3 well">
   <center>
-    <%= image_tag gravatar_url( @user, size: 140 ), width: 140, height: 140, class: "img-circle" %>
+    <%= gravatar_tag( @user, size: 140 ) %>
     <h1><%= @user.name %></h1>
     <em><%= @user.email %></em>
+    <% if current_user.admin? && !current_user?( @user ) %>
+      <br>
+      <%= link_to "Delete User", @user, method: :delete, data: { confirm: "You sure?" } %>
+    <% end %>
 	</center>
 </div>

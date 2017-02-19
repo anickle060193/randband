@@ -1,0 +1,9 @@
+<% provide( :title, @user.name ) %>
+
+<div class="span3 well">
+  <center>
+    <%= image_tag gravatar_url( @user, size: 140 ), width: 140, height: 140, class: "img-circle" %>
+    <h1><%= @user.name %></h1>
+    <em><%= @user.email %></em>
+	</center>
+</div>

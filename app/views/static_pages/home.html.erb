@@ -1,7 +1,9 @@
 <div class="jumbotron">
   <h1>Welcome to Choose-a-Band</h1>
   <p>This is a simple application to help you decide what to listen to.</p>
-  <p>
-    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-  </p>
+  <% if !logged_in? %>
+    <p>
+      <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+    </p>
+  <% end %>
 </div>

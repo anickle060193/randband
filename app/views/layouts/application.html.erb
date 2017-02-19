@@ -28,7 +28,17 @@
 
     <%= render 'layouts/footer' %>
 
-    <%= debug( params ) if Rails.env.development? %>
+
+    <% if Rails.env.development? %>
+      <div style="position: absolute; bottom: 60px;">
+        <button class="btn" type="button" data-toggle="collapse" data-target="#debugCollapse" aria-expanded="false" aria-controls="debugCollapse">
+          Debug Information
+        </button>
+        <div class="collapse" id="debugCollapse">
+          <%= debug( params ) %>
+        </div>
+      </div>
+    <% end %>
 
   </body>
 </html>

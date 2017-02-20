@@ -1,0 +1,32 @@
+<% provide( :title, "Bands" ) %>
+
+<%= form_tag bands_url, method: :get, class: "form-horizontal" do %>
+  <div class="input-group">
+    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for a band..." %>
+    <span class="input-group-btn">
+      <%= submit_tag "Search Bands", :name => nil, class: "btn btn-primary" %>
+    </span>
+  </div>
+<% end %>
+
+<br>
+
+<% if @bands.any? %>
+
+  <% if params[ :search ].blank? %>
+    <h3>Listing All Bands</h3>
+  <% else %>
+    <%= content_tag :h3, "Searching for '#{params[ :search ]}'" %>
+  <% end %>
+
+  <div class="list-group">
+    <%= render @bands %>
+  </div>
+
+  <%= will_paginate %>
+
+<% else %>
+
+  <h4>No bands found...</h4>
+
+<% end %>

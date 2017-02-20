@@ -42,6 +42,10 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  def admin?
+    current_user && current_user.admin?
+  end
+
   def store_location
     session[ :forwarding_url ] = request.original_url if request.get?
   end

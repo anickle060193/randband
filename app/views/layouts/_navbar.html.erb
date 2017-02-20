@@ -12,6 +12,8 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <%= content_tag( :li, link_to( "Home", root_path ), class: ( "active" if current_page?( root_path ) ) ) %>
+        <%= content_tag( :li, link_to( "Bands", bands_path ), class: ( "active" if current_page?( bands_path ) ) ) %>
+        <%= content_tag( :li, link_to( "Users", users_path ), class: ( "active" if current_page?( users_path ) ) ) if logged_in? %>
         <%= content_tag( :li, link_to( "About", about_path ), class: ( "active" if current_page?( about_path ) ) ) %>
       </ul>
       <ul class="nav navbar-nav navbar-right">

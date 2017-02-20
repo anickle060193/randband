@@ -17,3 +17,12 @@ User.create!( name: "Tester McFirst",
                 activated: true,
                 activated_at: Time.zone.now )
 end
+
+99.times do |n|
+  name = Faker::RockBand.name
+  if name.length < 50
+    Band.create!( name: name, link: "https://example.com/#{name.downcase().gsub( ' ', '_' )}" )
+  else
+    puts name
+  end
+end

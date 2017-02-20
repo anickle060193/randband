@@ -1,0 +1,12 @@
+<% provide( :title, @band.name ) %>
+
+<div class="span3 well">
+  <center>
+    <h1><%= @band.name %></h1>
+    <em><%= link_to @band.link, @band.link %></em>
+    <% if admin? %>
+      <br>
+      <%= link_to "Delete Band", @band, method: :delete, data: { confirm: "You sure?" } %>
+    <% end %>
+	</center>
+</div>

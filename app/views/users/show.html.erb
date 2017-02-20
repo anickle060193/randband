@@ -5,7 +5,7 @@
     <%= gravatar_tag( @user, size: 140 ) %>
     <h1><%= @user.name %></h1>
     <em><%= @user.email %></em>
-    <% if current_user.admin? && !current_user?( @user ) %>
+    <% if admin? && !current_user?( @user ) %>
       <br>
       <%= link_to "Delete User", @user, method: :delete, data: { confirm: "You sure?" } %>
     <% end %>

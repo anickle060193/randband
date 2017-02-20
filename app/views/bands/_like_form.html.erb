@@ -1,0 +1,7 @@
+<% if logged_in? %>
+  <% if current_user.like?( @band ) %>
+    <%= render 'unlike' %>
+  <% else %>
+    <%= render 'like' %>
+  <% end %>
+<% end %>

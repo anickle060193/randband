@@ -22,7 +22,11 @@ end
   name = Faker::RockBand.name
   if name.length < 50
     Band.create!( name: name, link: "https://example.com/#{name.downcase().gsub( ' ', '_' )}" )
-  else
-    puts name
   end
 end
+
+user = User.first
+Band.all[ 2..50 ].each { |band| user.like( band ) }
+
+band = Band.first
+User.all[ 2..50 ].each { |user| user.like( band ) }

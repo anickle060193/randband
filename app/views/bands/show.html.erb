@@ -4,9 +4,21 @@
   <center>
     <h1><%= @band.name %></h1>
     <em><%= link_to @band.link, @band.link %></em>
+
+    <%= render 'like_form' %>
+
     <% if admin? %>
-      <br>
-      <%= link_to "Delete Band", @band, method: :delete, data: { confirm: "You sure?" } %>
+      <%= link_to "Delete Band", @band, method: :delete, data: { confirm: "Are you sure you want to delete #{@band.name}?" } %>
     <% end %>
 	</center>
 </div>
+
+<% if @users.any? %>
+  <h3>Listing All Users</h3>
+
+  <div class="list-group">
+    <%= render @users %>
+  </div>
+
+  <%= will_paginate @users %>
+<% end %>

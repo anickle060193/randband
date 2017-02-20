@@ -13,6 +13,7 @@ class BandsController < ApplicationController
 
   def show
     @band = Band.find( params[ :id ] )
+    @users = @band.users.order( :name ).paginate( page: params[ :page ], per_page: 7 )
   end
 
   def new
@@ -46,6 +47,11 @@ class BandsController < ApplicationController
   def destroy
     Band.find( params[ :id ] ).destroy
     redirect_to bands_url
+  end
+
+  def like
+    @band = Band.find( params[ :id ] )
+    @band.users << current_user
   end
 
   private

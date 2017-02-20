@@ -11,3 +11,13 @@
     <% end %>
 	</center>
 </div>
+
+<% if @bands.any? %>
+  <h3>Listing All Bands</h3>
+
+  <div class="list-group">
+    <%= render @bands %>
+  </div>
+
+  <%= will_paginate @bands %>
+<% end %>

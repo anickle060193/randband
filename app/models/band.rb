@@ -1,4 +1,7 @@
 class Band < ApplicationRecord
+  has_many :user_band_relation
+  has_many :users, through: :user_band_relation
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :link, presence: true
   validate :valid_link_scheme

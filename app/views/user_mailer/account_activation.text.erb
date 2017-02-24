@@ -1,5 +1,5 @@
 Hello <%= @user.name %>,
 
-Welcome to Choose-a-Band! Open the link below in a web browser to activate your account:
+Welcome to RandBand! Open the link below in a web browser to activate your account:
 
 <%= edit_account_activation_url( @user.activation_token, email: @user.email ) %>

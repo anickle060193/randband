@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [ :edit, :update ]
+  before_action :logged_in_user, only: [ :edit, :update, :spotify ]
   before_action :correct_user, only: [ :edit, :update ]
   before_action :admin_user, only: [ :destroy ]
 
@@ -46,6 +46,35 @@ class UsersController < ApplicationController
     User.find( params[ :id ] ).destroy
     flash[ :success ] = "User deleted."
     redirect_to users_url
+  end
+
+  def spotify
+    spotify_user = RSpotify::User.new( request.env[ "omniauth.auth" ] )
+
+    after = 0
+    spotify_ids = [ ]
+
+    loop do
+      puts after
+      artists = spotify_user.following( type: "artist", limit: 30, after: after )
+
+      break if artists.empty?
+
+      after += artists.length
+      artists.each do |artist|
+        unless current_user.like?( artist.id ) or spotify_ids.include?( artist.id )
+          spotify_ids << artist.id
+        end
+      end
+    end
+
+    spotify_ids.each do |spotify_id|
+      current_user.band_likes.create( spotify_id: spotify_id )
+    end
+
+    added_count = spotify_ids.length
+    flash[ added_count > 0 ? :success : :info ] = "Added #{ added_count } new #{ "band".pluralize( added_count ) }."
+    redirect_to current_user
   end
 
   private

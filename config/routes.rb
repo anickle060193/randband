@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
+  get '/auth/spotify/callback', to: 'users#spotify'
+
   resources :users, except: [ :index ]
 
   resources :account_activations, only: [ :edit ]

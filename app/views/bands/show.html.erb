@@ -2,23 +2,9 @@
 
 <div class="span3 well">
   <center>
-    <h1><%= @band.name %></h1>
-    <em><%= link_to @band.link, @band.link %></em>
-
-    <%= render 'like_form' %>
-
-    <% if admin? %>
-      <%= link_to "Delete Band", @band, method: :delete, data: { confirm: "Are you sure you want to delete #{@band.name}?" } %>
-    <% end %>
+    <%= image_tag( @band.images.first[ "url" ], alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.images.empty? %>
+    <h1><%= link_to @band.name, @band.external_urls[ "spotify" ], target: "_blank", rel: "noopener noreferrer" %></h1>
+    <%= content_tag( :em, @band.genres.join( ", " ) ) unless @band.genres.empty? %>
+    <%= render "like_form" %>
 	</center>
 </div>
-
-<% if @users.any? %>
-  <h3>Listing All Users</h3>
-
-  <div class="list-group">
-    <%= render @users %>
-  </div>
-
-  <%= will_paginate @users %>
-<% end %>

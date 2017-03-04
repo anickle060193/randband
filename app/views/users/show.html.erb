@@ -12,12 +12,22 @@
 	</center>
 </div>
 
-<% if @bands.any? %>
-  <h3>Listing All Bands</h3>
+<div class="row">
 
-  <div class="list-group">
-    <%= render @bands %>
-  </div>
+  <% if @bands.any? %>
+    <div class="col-md-4">
 
-  <%= will_paginate @bands %>
-<% end %>
+      <h2>Liked Bands</h2>
+
+      <div class="list-group">
+        <%= render partial: "bands/band", collection: @bands %>
+      </div>
+
+      <%= will_paginate @band_likes, param_name: :bands_page %>
+
+    </div>
+
+  <% end %>
+
+</div>
+

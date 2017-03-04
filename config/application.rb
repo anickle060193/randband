@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module ChooseABand
+module RandBand
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -14,5 +14,8 @@ module ChooseABand
 
     # Include the authenticity token in remote forms.
     config.action_view.embed_authenticity_token_in_remote_forms = true
+
+    RSpotify::authenticate( Rails.application.secrets.spotify_id, Rails.application.secrets.spotify_secret )
+
   end
 end

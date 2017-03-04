@@ -13,19 +13,11 @@
 
 <% if @bands.any? %>
 
-  <% if params[ :search ].blank? %>
-    <h3>Listing All Bands</h3>
-  <% else %>
-    <%= content_tag :h3, "Searching for '#{params[ :search ]}'" %>
-  <% end %>
-
   <div class="list-group">
-    <%= render @bands %>
+    <%= render partial: "band", collection: @bands %>
   </div>
 
-  <%= will_paginate %>
-
-<% else %>
+<% elsif !params[ :search ].blank? %>
 
   <h4>No bands found...</h4>
 

@@ -1,16 +1,16 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [ :index, :edit, :update ]
+  before_action :logged_in_user, only: [ :edit, :update ]
   before_action :correct_user, only: [ :edit, :update ]
   before_action :admin_user, only: [ :destroy ]
 
-  def index
-    @users = User.where( activated: true ).order( :name ).paginate( page: params[ :page ], per_page: 10 )
-  end
-
   def show
     @user = User.find( params[ :id ] )
-    redirect_to root_url and return unless @user.activated?
-    @bands = @user.bands.order( :name ).paginate( page: params[ :page ], per_page: 8 )
+    @band_likes = @user.band_likes.paginate( page: params[ :bands_page ], per_page: 8 )
+    if @band_likes.any?
+      @bands = RSpotify::Artist.find( @band_likes.map { |band_like| band_like.spotify_id } )
+    else
+      @bands = [ ]
+    end
   end
 
   def new

@@ -9,4 +9,8 @@ module ApplicationHelper
     end
   end
 
+  def navbar_link_item( s, link )
+    content_tag( :li, link_to( s, link ), class: ( "active" if current_page?( link ) ) )
+  end
+
 end

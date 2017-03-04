@@ -1,0 +1,9 @@
+<div class="jumbotron">
+  <center>
+    <h1><%= @band.name %></h1>
+  </center>
+</div>
+
+<center>
+  <%= content_tag :iframe, '', src: "https://embed.spotify.com/?uri=#{ @band.uri }&theme=white", width: "80%%", height: "380", frameborder: "0", allowtransparency: "true" %>
+</center>

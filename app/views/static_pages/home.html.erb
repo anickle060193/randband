@@ -1,9 +1,5 @@
-<div class="jumbotron">
-  <h1>Welcome to RandBand</h1>
-  <p>This is a simple application to help you decide what to listen to.</p>
-  <% if !logged_in? %>
-    <p>
-      <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-    </p>
-  <% end %>
-</div>
+<% if logged_in? %>
+  <%= render "logged_in_home" %>
+<% else %>
+  <%= render "not_logged_in_home" %>
+<% end %>

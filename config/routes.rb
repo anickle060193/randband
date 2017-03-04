@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   resources :bands, only: [ :index, :show ]
 
   resources :band_likes, only: [ :create, :destroy ]
+
+  resources :choose, only: [ :index ]
 end

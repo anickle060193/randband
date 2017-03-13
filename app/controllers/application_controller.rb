@@ -3,12 +3,17 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   protected
+
     def logged_in_user
       unless logged_in?
         store_location
         flash[ :danger ] = "Please log in."
         redirect_to login_url
       end
+    end
+
+    def not_found( msg="Not found" )
+      raise ActionController::RoutingError.new( msg )
     end
 
 end

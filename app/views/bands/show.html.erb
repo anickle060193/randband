@@ -2,8 +2,8 @@
 
 <div class="span3 well">
   <center>
-    <%= image_tag( @band.images.first[ "url" ], alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.images.empty? %>
-    <h1><%= link_to @band.name, @band.external_urls[ "spotify" ], target: "_blank", rel: "noopener noreferrer" %></h1>
+    <%= image_tag( @band.thumbnail, alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.thumbnail.nil? %>
+    <h1><%= link_to @band.name, @band.external_url, target: "_blank", rel: "noopener noreferrer" %></h1>
     <%= content_tag( :em, @band.genres.join( ", " ) ) unless @band.genres.empty? %>
     <%= render "like_form" %>
 	</center>

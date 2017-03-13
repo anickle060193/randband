@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @user = User.find( params[ :id ] )
     @band_likes = @user.band_likes.paginate( page: params[ :bands_page ], per_page: 8 )
     if @band_likes.any?
-      @bands = RSpotify::Artist.find( @band_likes.map { |band_like| band_like.spotify_id } )
+      @bands = RSpotify::Artist.find( @band_likes.collect { |band_like| band_like.spotify_id } ).map { |spotify_artist| SpotifyBand.new( spotify_artist ) }
     else
       @bands = [ ]
     end

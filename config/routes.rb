@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   resources :account_activations, only: [ :edit ]
   resources :password_resets, only: [ :new, :create, :edit, :update ]
 
-  resources :bands, only: [ :index, :show ]
+  resources :bands, only: [ :index ]
+
+  get '/band', to: 'bands#show'
 
   resources :band_likes, only: [ :create, :destroy ]
 

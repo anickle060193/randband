@@ -4,13 +4,13 @@ class BandLikesController < ApplicationController
   def create
     spotify_id = params[ :spotify_id ]
     current_user.like( spotify_id )
-    redirect_to band_url( spotify_id )
+    redirect_to band_url( provider: "spotify", id: spotify_id )
   end
 
   def destroy
     band_like = current_user.band_likes.find( params[ :id ] )
     band_like.destroy!
-    redirect_to band_url( band_like.spotify_id )
+    redirect_to band_url( provider: "spotify", id: band_like.spotify_id )
   end
 
 end

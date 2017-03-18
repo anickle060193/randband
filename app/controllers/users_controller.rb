@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find( params[ :id ] )
-    @bands = @user.bands.order( :name ).paginate( page: params[ :bands_page ], per_page: 8 )
+    @bands = @user.bands.order_by_name.paginate( page: params[ :bands_page ], per_page: 8 )
   end
 
   def new
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       flash[ :info ] = "Please check your email to activate your account."
       redirect_to root_url
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -33,13 +33,13 @@ class UsersController < ApplicationController
       flash[ :success ] = "Profile updated"
       redirect_to @user
     else
-      render 'edit'
+      render :edit
     end
   end
 
   def destroy
     User.find( params[ :id ] ).destroy
-    flash[ :success ] = "User deleted."
+    flash[ :info ] = "User deleted."
     redirect_to users_url
   end
 

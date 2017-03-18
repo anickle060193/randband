@@ -2,9 +2,17 @@
 
 <div class="span3 well">
   <center>
-    <%= image_tag( @band.thumbnail, alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.thumbnail.nil? %>
-    <h1><%= link_to @band.name, @band.external_url, target: "_blank", rel: "noopener noreferrer" %></h1>
+    <%= image_tag( @band.thumbnail, alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.thumbnail.blank? %>
+    <% if @band.external_url.blank? %>
+      <h1><%= @band.name %></h1>
+    <% else %>
+      <h1><%= link_to @band.name, @band.external_url, target: "_blank", rel: "noopener noreferrer" %></h1>
+    <% end %>
     <%#= content_tag( :em, @band.genres.join( ", " ) ) unless @band.genres.empty? %>
+    <% if current_user?( @band.user ) %>
+      <%= link_to "Edit", edit_band_link( @band ) %> |
+      <%= link_to "Delete", band_url( @band ), method: :delete %>
+    <% end %>
     <%= render "like_form" %>
 	</center>
 </div>

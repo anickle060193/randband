@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317013746) do
+ActiveRecord::Schema.define(version: 20170318052056) do
 
   create_table "band_likes", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -29,7 +29,8 @@ ActiveRecord::Schema.define(version: 20170317013746) do
     t.integer  "user_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["provider", "provider_id"], name: "index_bands_on_provider_and_provider_id"
+    t.index ["name"], name: "index_bands_on_name", unique: true
+    t.index ["provider", "provider_id"], name: "index_bands_on_provider_and_provider_id", unique: true
     t.index ["user_id"], name: "index_bands_on_user_id"
   end
 

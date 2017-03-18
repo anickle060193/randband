@@ -1,9 +1,9 @@
 <div class="jumbotron">
   <center>
-    <% if @band.external_url %>
-      <h1><%= link_to @band.name, @band.external_url %></h1>
-    <% else %>
+    <% if @band.external_url.blank? %>
       <h1><%= @band.name %></h1>
+    <% else %>
+      <h1><%= link_to @band.name, @band.external_url %></h1>
     <% end %>
   </center>
 </div>

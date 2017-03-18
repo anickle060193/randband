@@ -17,3 +17,18 @@ User.create!( name: "Tester McFirst",
                 activated: true,
                 activated_at: Time.zone.now )
 end
+
+artists = [
+  "Lindsey Stirling",
+  "Taylor Swift",
+  "Ryn Weaver",
+  "My Chemical Romance",
+  "Fall Out Boy"
+  ]
+
+artists.each do |artist|
+  Band.from_spotify_band( RSpotify::Artist.search( artist ).first ).save!
+end
+
+User.first.like( Band.first )
+User.first.like( Band.second )

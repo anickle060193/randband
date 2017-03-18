@@ -1,9 +1,18 @@
 class Band < ApplicationRecord
   has_many :band_likes, dependent: :destroy
   has_many :users, through: :band_likes
+  belongs_to :user, optional: true
 
-  validates_uniqueness_of :provider_id, scope: :provider
+  scope :order_by_name, -> { order( "LOWER( name )" ) }
 
+  validates :name, presence: true, uniqueness: true
+  validates :provider, presence: true
+  validates :provider_id, presence: true, uniqueness: { scope: :provider }
+  validates :thumbnail, url: true
+  validates :external_url, url: true
+  validates :user_id, presence: true, if: Proc.new { |band| band.provider == CUSTOM_PROVIDER }
+
+  CUSTOM_PROVIDER = "custom"
   SPOTIFY_PROVIDER = "spotify"
 
   def self.find_by_provider( provider, provider_id )

@@ -3,9 +3,12 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [ :edit, :update ]
   before_action :admin_user, only: [ :destroy ]
 
+  BANDS_PER_PAGE = 7
+
   def show
     @user = User.find( params[ :id ] )
-    @bands = @user.bands.order_by_name.paginate( page: params[ :bands_page ], per_page: 8 )
+    @liked_bands = @user.bands.order_by_name.paginate( page: params[ :liked_bands_page ], per_page: BANDS_PER_PAGE )
+    @created_bands = Band.where( user: @user ).paginate( page: params[ :created_bands_page ], per_page: BANDS_PER_PAGE )
   end
 
   def new

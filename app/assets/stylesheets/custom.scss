@@ -64,3 +64,8 @@ div.pagination
     color: $state-danger-text;
   }
 }
+
+textarea
+{
+  resize: vertical;
+}

@@ -12,16 +12,31 @@
 
 <div class="row">
 
-  <% if @bands.any? %>
+  <% if @liked_bands.any? %>
     <div class="col-md-4">
 
       <h2>Liked Bands</h2>
 
       <div class="list-group">
-        <%= render @bands %>
+        <%= render @liked_bands %>
       </div>
 
-      <%= will_paginate @bands, param_name: :bands_page %>
+      <%= will_paginate @liked_bands, param_name: :liked_bands_page %>
+
+    </div>
+
+  <% end %>
+
+  <% if @created_bands.any? %>
+    <div class="col-md-4">
+
+      <h2>Created Bands</h2>
+
+      <div class="list-group">
+        <%= render @created_bands %>
+      </div>
+
+      <%= will_paginate @created_bands, param_name: :created_bands_page %>
 
     </div>
 

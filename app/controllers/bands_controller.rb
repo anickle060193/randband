@@ -38,10 +38,15 @@ class BandsController < ApplicationController
   end
 
   def create
-    @band = Band.new( band_params )
+    @band = Band.new( band_params.except( :genres ) )
     @band.user = current_user
     @band.provider = Band::CUSTOM_PROVIDER
     @band.provider_id = SecureRandom.urlsafe_base64
+
+    entered_genres.each do |genre|
+      @band.genres.create!( genre: genre, user: current_user )
+    end
+
     if @band.save
       flash[ :success ] = "Band created!"
       current_user.bands << @band
@@ -57,7 +62,17 @@ class BandsController < ApplicationController
 
   def update
     @band = Band.find( params[ :id ] )
-    if @band.update_attributes( band_params )
+
+    new_genre_names = entered_genres.map { |s| s.downcase }
+    current_genre_names = @band.genres.where( user: current_user ).order( :genre ).pluck( :genre )
+
+    @band.genres.where( genre: current_genre_names - new_genre_names ).destroy_all
+
+    ( new_genre_names - current_genre_names ).each do |genre|
+      @band.genres.create!( genre: genre, user: current_user )
+    end
+
+    if @band.update_attributes( band_params.except( :genres ) )
       flash[ :success ] = "Band updated"
       redirect_to helpers.band_link( @band )
     else
@@ -74,7 +89,11 @@ class BandsController < ApplicationController
   private
 
     def band_params
-      params.require( :band ).permit( :name, :thumbnail, :external_url )
+      params.require( :band ).permit( :name, :thumbnail, :external_url, :genres )
+    end
+
+    def entered_genres
+      band_params[ :genres ].split( /\r?\n/ )
     end
 
     def correct_user

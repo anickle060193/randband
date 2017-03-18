@@ -17,6 +17,13 @@
     <%= f.text_field :external_url, class: "form-control" %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :genres, class: "control-label" do %>
+      Genres <small class="text-muted">(one per line)</small>
+    <% end %>
+    <%= f.text_area :genres, value: format_genres( f.object.genres ), class: "form-control", rows: 10 %>
+  </div>
+
   <%= f.submit yield( :button_text ), class: "btn btn-primary btn-lg btn-block" %>
 
 <% end %>

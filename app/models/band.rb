@@ -2,6 +2,7 @@ class Band < ApplicationRecord
   has_many :band_likes, dependent: :destroy
   has_many :users, through: :band_likes
   belongs_to :user, optional: true
+  has_many :genres, dependent: :destroy
 
   scope :order_by_name, -> { order( "LOWER( name )" ) }
 
@@ -37,6 +38,7 @@ class Band < ApplicationRecord
       image = spotify_band.images.first
       b.thumbnail = image[ "url" ] if !image.nil?
       b.external_url = spotify_band.external_urls[ "spotify" ]
+      spotify_band.genres.each { |g| b.genres.build( genre: g ) }
     end
     return b
   end

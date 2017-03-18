@@ -6,7 +6,7 @@ class CreateBands < ActiveRecord::Migration[5.0]
       t.string :provider_id, null: false
       t.string :thumbnail
       t.string :external_url
-      t.belongs_to :user, index: true
+      t.belongs_to :user, foreign_key: true, index: true
 
 
       t.timestamps

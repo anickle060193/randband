@@ -10,14 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170219230112) do
+ActiveRecord::Schema.define(version: 20170317013746) do
 
   create_table "band_likes", force: :cascade do |t|
-    t.integer "user_id"
-    t.string  "spotify_id"
-    t.index ["spotify_id"], name: "index_band_likes_on_spotify_id"
-    t.index ["user_id", "spotify_id"], name: "index_band_likes_on_user_id_and_spotify_id", unique: true
+    t.integer "user_id", null: false
+    t.integer "band_id", null: false
+    t.index ["band_id"], name: "index_band_likes_on_band_id"
+    t.index ["user_id", "band_id"], name: "index_band_likes_on_user_id_and_band_id", unique: true
     t.index ["user_id"], name: "index_band_likes_on_user_id"
+  end
+
+  create_table "bands", force: :cascade do |t|
+    t.string   "name",         null: false
+    t.string   "provider",     null: false
+    t.string   "provider_id",  null: false
+    t.string   "thumbnail"
+    t.string   "external_url"
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["provider", "provider_id"], name: "index_bands_on_provider_and_provider_id"
+    t.index ["user_id"], name: "index_bands_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

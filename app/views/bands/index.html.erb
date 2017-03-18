@@ -2,7 +2,7 @@
 
 <%= form_tag bands_url, method: :get, class: "form-horizontal" do %>
   <div class="input-group">
-    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for a band..." %>
+    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for a band...", autofocus: true %>
     <span class="input-group-btn">
       <%= submit_tag "Search Bands", :name => nil, class: "btn btn-primary" %>
     </span>
@@ -14,7 +14,7 @@
 <% if @bands.any? %>
 
   <div class="list-group">
-    <%= render partial: "band", collection: @bands %>
+    <%= render @bands %>
   </div>
 
 <% elsif !params[ :search ].blank? %>

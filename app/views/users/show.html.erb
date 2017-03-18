@@ -7,10 +7,6 @@
     <em><%= @user.email %></em>
     <br>
     <%= link_to "Import bands from Spotify", "/auth/spotify" unless !current_user?( @user ) %>
-    <% if admin? && !current_user?( @user ) %>
-      <br>
-      <%= link_to "Delete User", @user, method: :delete, data: { confirm: "You sure?" } %>
-    <% end %>
 	</center>
 </div>
 
@@ -22,10 +18,10 @@
       <h2>Liked Bands</h2>
 
       <div class="list-group">
-        <%= render partial: "bands/band", collection: @bands %>
+        <%= render @bands %>
       </div>
 
-      <%= will_paginate @band_likes, param_name: :bands_page %>
+      <%= will_paginate @bands, param_name: :bands_page %>
 
     </div>
 

@@ -5,12 +5,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find( params[ :id ] )
-    @band_likes = @user.band_likes.paginate( page: params[ :bands_page ], per_page: 8 )
-    if @band_likes.any?
-      @bands = RSpotify::Artist.find( @band_likes.collect { |band_like| band_like.spotify_id } ).map { |spotify_artist| SpotifyBand.new( spotify_artist ) }
-    else
-      @bands = [ ]
-    end
+    @bands = @user.bands.order( :name ).paginate( page: params[ :bands_page ], per_page: 8 )
   end
 
   def new
@@ -52,27 +47,29 @@ class UsersController < ApplicationController
     spotify_user = RSpotify::User.new( request.env[ "omniauth.auth" ] )
 
     after = 0
-    spotify_ids = [ ]
+    spotify_bands = [ ]
 
     loop do
-      puts after
-      artists = spotify_user.following( type: "artist", limit: 30, after: after )
+      found = spotify_user.following( type: "artist", limit: 30, after: after )
 
-      break if artists.empty?
+      break if found.empty?
 
-      after += artists.length
-      artists.each do |artist|
-        unless current_user.like?( artist.id ) or spotify_ids.include?( artist.id )
-          spotify_ids << artist.id
-        end
+      spotify_bands += found
+      after += found.length
+    end
+
+    spotify_bands.uniq! { |spotify_band| spotify_band.id }
+
+    added_count = 0
+
+    spotify_bands.each do |spotify_band|
+      unless current_user.bands.find_by( provider: Band::SPOTIFY_PROVIDER, provider_id: spotify_band.id )
+        band = Band.from_spotify_band( spotify_band )
+        current_user.like( band )
+        added_count += 1
       end
     end
 
-    spotify_ids.each do |spotify_id|
-      current_user.band_likes.create( spotify_id: spotify_id )
-    end
-
-    added_count = spotify_ids.length
     flash[ added_count > 0 ? :success : :info ] = "Added #{ added_count } new #{ "band".pluralize( added_count ) }."
     redirect_to current_user
   end

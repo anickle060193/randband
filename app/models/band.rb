@@ -1,0 +1,35 @@
+class Band < ApplicationRecord
+  has_many :band_likes, dependent: :destroy
+  has_many :users, through: :band_likes
+
+  validates_uniqueness_of :provider_id, scope: :provider
+
+  SPOTIFY_PROVIDER = "spotify"
+
+  def self.find_by_provider( provider, provider_id )
+    b = Band.find_by( provider: provider, provider_id: provider_id )
+    return b unless b.nil?
+
+    if provider == SPOTIFY_PROVIDER
+      spotify_band = RSpotify::Artist.find( provider_id )
+      return Band.from_spotify_band( spotify_band )
+    else
+      raise ArgumentError.new( "Invalid provider: '#{provider}' - ID: '#{provider_id}'" )
+    end
+  end
+
+  def self.from_spotify_band( spotify_band )
+    b = Band.find_by( provider: SPOTIFY_PROVIDER, provider_id: spotify_band.id )
+    if b.nil?
+      b = Band.new
+      b.name = spotify_band.name
+      b.provider = SPOTIFY_PROVIDER
+      b.provider_id = spotify_band.id
+      image = spotify_band.images.first
+      b.thumbnail = image[ "url" ] if !image.nil?
+      b.external_url = spotify_band.external_urls[ "spotify" ]
+    end
+    return b
+  end
+
+end

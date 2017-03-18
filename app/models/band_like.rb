@@ -1,7 +1,8 @@
 class BandLike < ApplicationRecord
   belongs_to :user
+  belongs_to :band
 
-  validates :spotify_id, presence: true
   validates :user_id, presence: true
-  validates_uniqueness_of :user_id, scope: :spotify_id
+  validates :band_id, presence: true
+  validates_uniqueness_of :band_id, scope: :user_id
 end

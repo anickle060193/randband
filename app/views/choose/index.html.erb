@@ -1,9 +1,9 @@
 <div class="jumbotron">
   <center>
-    <h1><%= @band.name %></h1>
+    <% if @band.external_url %>
+      <h1><%= link_to @band.name, @band.external_url %></h1>
+    <% else %>
+      <h1><%= @band.name %></h1>
+    <% end %>
   </center>
 </div>
-
-<center>
-  <%= content_tag :iframe, '', src: "https://embed.spotify.com/?uri=#{ @band.uri }&theme=white", width: "80%%", height: "380", frameborder: "0", allowtransparency: "true" %>
-</center>

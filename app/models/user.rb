@@ -2,6 +2,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
 
   has_many :band_likes, dependent: :destroy
+  has_many :bands, through: :band_likes
 
   before_save :downcase_email
   before_create :create_activation_digest
@@ -48,17 +49,16 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
-  def like( spotify_id )
-    band_like = band_likes.build( spotify_id: spotify_id )
-    band_like.save!
+  def like( band )
+    bands << band
   end
 
-  def unlike( spotify_id )
-    band_likes.find_by( spotify_id: spotify_id ).destroy
+  def unlike( band )
+    bands.delete( band )
   end
 
-  def like?( spotify_id )
-    band_likes.where( spotify_id: spotify_id ).any?
+  def likes?( band )
+    bands.include?( band )
   end
 
   def User.digest( string )

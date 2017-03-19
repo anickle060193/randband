@@ -22,7 +22,7 @@ class BandsController < ApplicationController
           spotify_bands = RSpotify::Artist.search( params[ :search ], limit: pager.per_page, offset: pager.offset )
           pager.replace( spotify_bands.map { |spotify_band| Band.from_spotify_band( spotify_band ) } )
           pager.total_entries ||= spotify_bands.total
-        rescue RestClient::Unauthorized => error
+        rescue RestClient::Unauthorized
           flash.now[ :danger ] = "Something went wrong with the search. Try again?"
         end
       end
@@ -31,6 +31,9 @@ class BandsController < ApplicationController
 
   def show
     @band = Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
+  rescue RestClient::Unauthorized
+    flash[ :warning ] = "Could not find band. Try again?"
+    redirect_to bands_url
   end
 
   def new
@@ -43,14 +46,14 @@ class BandsController < ApplicationController
     @band.provider = Band::CUSTOM_PROVIDER
     @band.provider_id = SecureRandom.urlsafe_base64
 
-    entered_genres.each do |genre|
-      @band.genres.create!( genre: genre, user: current_user )
-    end
-
     if @band.save
+      entered_genres.each do |genre|
+        @band.genres.create( genre: genre, user: current_user )
+      end
+
       flash[ :success ] = "Band created!"
       current_user.bands << @band
-      redirect_to helpers.band_link( @band )
+      redirect_to band_link( @band )
     else
       render :new
     end
@@ -74,7 +77,7 @@ class BandsController < ApplicationController
 
     if @band.update( band_params.except( :genres ) )
       flash[ :success ] = "Band updated"
-      redirect_to helpers.band_link( @band )
+      redirect_to band_link( @band )
     else
       render :edit
     end
@@ -99,7 +102,7 @@ class BandsController < ApplicationController
     def correct_user
       band = Band.find_by( id: params[ :id ] )
       band ||= Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
-      redirect_to helpers.band_link( band ) unless current_user?( band.user )
+      redirect_to band_link( band ) unless current_user?( band.user )
     end
 
 end

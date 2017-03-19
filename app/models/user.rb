@@ -55,7 +55,7 @@ class User < ApplicationRecord
   end
 
   def likes?( band )
-    bands.include?( band )
+    bands.exists?( band.id )
   end
 
   def User.digest( string )

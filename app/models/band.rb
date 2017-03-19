@@ -22,14 +22,14 @@ class Band < ApplicationRecord
 
     if provider == SPOTIFY_PROVIDER
       spotify_band = RSpotify::Artist.find( provider_id )
-      return Band.from_spotify_band( spotify_band )
+      return Band.from_spotify_band( spotify_band, try_find: false )
     else
       raise ArgumentError.new( "Invalid provider: '#{provider}' - ID: '#{provider_id}'" )
     end
   end
 
-  def self.from_spotify_band( spotify_band )
-    b = Band.find_by( provider: SPOTIFY_PROVIDER, provider_id: spotify_band.id )
+  def self.from_spotify_band( spotify_band, try_find: true )
+    b = Band.find_by( provider: SPOTIFY_PROVIDER, provider_id: spotify_band.id ) if try_find
     if b.nil?
       b = Band.new
       b.name = spotify_band.name

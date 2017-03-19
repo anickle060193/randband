@@ -13,12 +13,19 @@
 
 <br>
 
+<% found = false %>
+
 <% @titles.zip( @providers ).each do |title, provider| %>
   <% if @bands[ provider ].present? %>
+    <% found = true %>
     <%= content_tag :h4, title %>
     <div class="list-group">
       <%= render @bands[ provider ] %>
     </div>
     <%= will_paginate @bands[ provider ], param_name: "#{provider}_page" %>
   <% end %>
+<% end %>
+
+<% if !found %>
+  <h4>No bands found...</h4>
 <% end %>

@@ -8,7 +8,7 @@
     <% else %>
       <h1><%= link_to @band.name, @band.external_url, target: "_blank", rel: "noopener noreferrer" %></h1>
     <% end %>
-    <%= content_tag( :em, @band.genres.pluck( :genre ).join( ", " ) ) unless @band.genres.empty? %>
+    <%= content_tag( :em, @band.genres.map( &:genre ).join( ", " ) ) unless @band.genres.empty? %>
     <br>
     <br>
     <% if current_user?( @band.user ) %>

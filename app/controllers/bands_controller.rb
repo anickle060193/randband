@@ -72,7 +72,7 @@ class BandsController < ApplicationController
       @band.genres.create!( genre: genre, user: current_user )
     end
 
-    if @band.update_attributes( band_params.except( :genres ) )
+    if @band.update( band_params.except( :genres ) )
       flash[ :success ] = "Band updated"
       redirect_to helpers.band_link( @band )
     else
@@ -81,7 +81,7 @@ class BandsController < ApplicationController
   end
 
   def destroy
-    Band.find( params[ :id ] ).destroy
+    Band.find( params[ :id ] ).destroy!
     flash[ :info ] = "Band deleted"
     redirect_to bands_url
   end

@@ -5,21 +5,21 @@ class User < ApplicationRecord
   has_many :bands, through: :band_likes
 
   before_save :downcase_email
-  before_create :create_activation_digest
+
+  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   validates :name, presence: true, length: { maximum: 50 }
-  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_nil: true
 
   def remember
     self.remember_token = User.new_token
-    update_attribute( :remember_digest, User.digest( remember_token ) )
+    update( remember_digest: User.digest( remember_token ) )
   end
 
   def forget
-    update_attribute( :remember_digest, nil )
+    update( remember_digest: nil )
   end
 
   def authenticated?( attribute, token )
@@ -29,19 +29,16 @@ class User < ApplicationRecord
   end
 
   def activate
-    update_columns( activated: true, activated_at: Time.zone.now )
+    update( activated: true, activated_at: Time.zone.now )
   end
 
   def send_activation_email
+    create_activation_digest
     UserMailer.account_activation( self ).deliver_now
   end
 
-  def create_reset_digest
-    self.reset_token = User.new_token
-    update_columns( reset_digest: User.digest( reset_token ), reset_sent_at: Time.zone.now )
-  end
-
   def send_password_reset_email
+    create_reset_digest
     UserMailer.password_reset( self ).deliver_now
   end
 
@@ -76,8 +73,16 @@ class User < ApplicationRecord
       email.downcase!
     end
 
+    def create_reset_digest
+      self.reset_token = User.new_token
+      self.reset_digest = User.digest( reset_token )
+      self.reset_sent_at = Time.zone.now
+      save!
+    end
+
     def create_activation_digest
       self.activation_token = User.new_token
       self.activation_digest = User.digest( activation_token )
+      save!
     end
 end

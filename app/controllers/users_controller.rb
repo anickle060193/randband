@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :find_user, only: [ :show, :edit, :update, :destroy ]
   before_action :logged_in_user, only: [ :edit, :update, :spotify ]
   before_action :correct_user, only: [ :edit, :update ]
   before_action :admin_user, only: [ :destroy ]
@@ -6,9 +7,11 @@ class UsersController < ApplicationController
   BANDS_PER_PAGE = 7
 
   def show
-    @user = User.find( params[ :id ] )
     @liked_bands = @user.bands.order_by_name.paginate( page: params[ :liked_bands_page ], per_page: BANDS_PER_PAGE )
     @created_bands = Band.where( user: @user ).paginate( page: params[ :created_bands_page ], per_page: BANDS_PER_PAGE )
+    if current_user?( @user ) && !@user.activated
+      flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."
+    end
   end
 
   def new
@@ -18,6 +21,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new( user_params )
     if @user.save
+      log_in @user
       @user.send_activation_email
       flash[ :info ] = "Please check your email to activate your account."
       redirect_to root_url
@@ -27,13 +31,16 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find( params[ :id ] )
   end
 
   def update
-    @user = User.find( params[ :id ] )
-    if @user.update_attributes( user_params )
+    old_email = @user.email
+    if @user.update( user_params )
       flash[ :success ] = "Profile updated"
+      if old_email != @user.email
+        @user.update( activated: false )
+        @user.send_activation_email
+      end
       redirect_to @user
     else
       render :edit
@@ -41,7 +48,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find( params[ :id ] ).destroy
+    @user.destroy!
     flash[ :info ] = "User deleted."
     redirect_to users_url
   end
@@ -79,12 +86,15 @@ class UsersController < ApplicationController
 
   private
 
+    def find_user
+      @user = User.find( params[ :id ] )
+    end
+
     def user_params
       params.require( :user ).permit( :name, :email, :password, :password_confirmation )
     end
 
     def correct_user
-      @user = User.find( params[ :id ] )
       redirect_to( @user ) unless current_user?( @user )
     end
 

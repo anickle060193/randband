@@ -1,0 +1,31 @@
+<center>
+  <% if @genres.any? %>
+    <h1>Select Genres:</h1>
+
+    <div class="btn-group">
+      <button class="btn btn-info" data-behavior="select-all">All</button>
+      <button class="btn btn-info" data-behavior="select-none">None</button>
+    </div>
+
+    <%= form_tag choose_url, method: :get do |f| %>
+      <div data-toggle="buttons">
+        <% @genres.each_with_index do |genre, index| %>
+            <%= label_tag genre, class: "btn btn-default", style: "margin-top: 8px;" do %>
+              <%= check_box_tag "genres[]", genre, false, class: "genre-checkbox", data: { behavior: "genre" } %><%= genre %>
+            <% end %>
+        <% end %>
+      </div>
+
+      <br>
+
+      <%= submit_tag "Choose!", name: nil, class: "btn btn-lg btn-primary", data: { behavior: "choose" } %>
+    <% end %>
+
+  <% else %>
+    <h1>You do not have any liked bands!</h1>
+    <p>
+      <%= link_to "Find Bands", bands_path, class: "btn btn-lg btn-primary" %>
+      <%= link_to "Create Bands", new_band_path, class: "btn btn-lg btn-primary" %>
+    </p>
+  <% end %>
+</center>

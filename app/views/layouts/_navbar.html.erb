@@ -14,6 +14,7 @@
         <%= navbar_link_item( "Home", root_path ) %>
         <%= navbar_link_item( "Bands", bands_path ) if logged_in? %>
         <%= navbar_link_item( "Add Band", new_band_path ) if logged_in? %>
+        <%= navbar_link_item( "Choose!", chooser_path ) if logged_in? %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>

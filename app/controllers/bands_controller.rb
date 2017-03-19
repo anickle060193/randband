@@ -1,4 +1,6 @@
 class BandsController < ApplicationController
+  before_action :find_band_by_provider, only: [ :show, :edit ]
+  before_action :find_band_by_id, only: [ :update, :destroy ]
   before_action :logged_in_user, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :correct_user, only: [ :edit, :update, :destroy ]
 
@@ -30,10 +32,6 @@ class BandsController < ApplicationController
   end
 
   def show
-    @band = Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
-  rescue RestClient::Unauthorized
-    flash[ :warning ] = "Could not find band. Try again?"
-    redirect_to bands_url
   end
 
   def new
@@ -60,12 +58,9 @@ class BandsController < ApplicationController
   end
 
   def edit
-    @band = Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
   end
 
   def update
-    @band = Band.find( params[ :id ] )
-
     new_genre_names = entered_genres.map { |s| s.downcase }
     current_genre_names = @band.genres.where( user: current_user ).order( :genre ).pluck( :genre )
 
@@ -84,7 +79,7 @@ class BandsController < ApplicationController
   end
 
   def destroy
-    Band.find( params[ :id ] ).destroy!
+    @band.destroy!
     flash[ :info ] = "Band deleted"
     redirect_to bands_url
   end
@@ -93,6 +88,17 @@ class BandsController < ApplicationController
 
     def band_params
       params.require( :band ).permit( :name, :thumbnail, :external_url, :genres )
+    end
+
+    def find_band_by_provider
+      @band = Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
+    rescue RestClient::Unauthorized
+      flash[ :warning ] = "Could not find band. Try again?"
+      redirect_to bands_url
+    end
+
+    def find_band_by_id
+      @band = Band.find( params[ :id ] )
     end
 
     def entered_genres

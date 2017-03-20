@@ -3,6 +3,11 @@
   <%= render 'shared/error_messages', object: f.object %>
 
   <div class="form-group">
+    <%= f.label :username, class: "control-label" %>
+    <%= f.text_field :username, class: "form-control", pattern: "[a-zA-Z0-9]+", title: "Username can only contain letters and numbers." %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :email, class: "control-label" %>
     <%= f.email_field :email, class: "form-control" %>
   </div>

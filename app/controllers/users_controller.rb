@@ -37,7 +37,7 @@ class UsersController < ApplicationController
 
   def update
     old_email = @user.email
-    if @user.update( user_params )
+    if @user.update( update_user_params )
       flash[ :success ] = "Profile updated"
       if @user.email.present? && ( old_email != @user.email )
         @user.update( activated: false )
@@ -89,11 +89,15 @@ class UsersController < ApplicationController
   private
 
     def find_user
-      @user = User.find( params[ :id ] )
+      @user = User.find_by!( username: params[ :id ] )
     end
 
-    def user_params
+    def new_user_params
       params.require( :user ).permit( :username, :email, :password, :password_confirmation )
+    end
+
+    def update_user_params
+      params.require( :user ).permit( :email, :password, :password_confirmation )
     end
 
     def correct_user

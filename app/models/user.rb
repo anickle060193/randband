@@ -6,12 +6,17 @@ class User < ApplicationRecord
 
   before_validation :fix_email
 
+  VALID_USERNAME_REGEX = /\A[a-zA-Z0-9]+\z/
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true, format: { with: VALID_USERNAME_REGEX, message: "can only contain letters or numbers" }, uniqueness: true
   validates :email, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, allow_nil: true
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_nil: true
+
+  def to_param
+    username
+  end
 
   def remember
     self.remember_token = User.new_token

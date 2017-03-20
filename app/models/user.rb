@@ -4,12 +4,12 @@ class User < ApplicationRecord
   has_many :band_likes, dependent: :destroy
   has_many :bands, through: :band_likes
 
-  before_save :downcase_email
+  before_validation :fix_email
 
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  validates :name, presence: true, length: { maximum: 50 }
-  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :username, presence: true, uniqueness: true
+  validates :email, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, allow_nil: true
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_nil: true
 
@@ -69,8 +69,12 @@ class User < ApplicationRecord
 
   private
 
-    def downcase_email
-      email.downcase!
+    def fix_email
+      if email.blank?
+        self.email = nil
+      else
+        email.downcase!
+      end
     end
 
     def create_reset_digest

@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   def show
     @liked_bands = @user.bands.order_by_name.paginate( page: params[ :liked_bands_page ], per_page: BANDS_PER_PAGE )
     @created_bands = Band.where( user: @user ).paginate( page: params[ :created_bands_page ], per_page: BANDS_PER_PAGE )
-    if current_user?( @user ) && !@user.activated
+    if current_user?( @user ) && @user.email.present? && !@user.activated
       flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."
     end
   end
@@ -22,8 +22,10 @@ class UsersController < ApplicationController
     @user = User.new( user_params )
     if @user.save
       log_in @user
-      @user.send_activation_email
-      flash[ :info ] = "Please check your email to activate your account."
+      if @user.email.present?
+        @user.send_activation_email
+        flash[ :info ] = "Please check your email to activate your account."
+      end
       redirect_to root_url
     else
       render :new
@@ -37,7 +39,7 @@ class UsersController < ApplicationController
     old_email = @user.email
     if @user.update( user_params )
       flash[ :success ] = "Profile updated"
-      if old_email != @user.email
+      if @user.email.present? && ( old_email != @user.email )
         @user.update( activated: false )
         @user.send_activation_email
       end
@@ -91,7 +93,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require( :user ).permit( :name, :email, :password, :password_confirmation )
+      params.require( :user ).permit( :username, :email, :password, :password_confirmation )
     end
 
     def correct_user

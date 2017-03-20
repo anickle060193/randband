@@ -10,12 +10,14 @@
         </div>
     </div>
 
-    <center>
-      <%= gravatar_tag( @user, size: 100 ) %>
-      <p>
-        <a href="http://gravatar.com/emails" target="_blank" rel="noopener">change</a>
-      </p>
-  	</center>
+    <% if @user.email.present? %>
+      <center>
+        <%= gravatar_tag( @user, size: 100 ) %>
+        <p>
+          <a href="http://gravatar.com/emails" target="_blank" rel="noopener">change</a>
+        </p>
+      </center>
+    <% end %>
 
     <% provide( :button_text, 'Save Changes' ) %>
     <%= render 'form' %>

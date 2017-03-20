@@ -1,10 +1,10 @@
-<% provide( :title, @user.name ) %>
+<% provide( :title, @user.username ) %>
 
 <div class="span3 well">
   <center>
-    <%= gravatar_tag( @user, size: 140 ) %>
-    <h1><%= @user.name %></h1>
-    <em><%= @user.email %></em>
+    <%= gravatar_tag( @user, size: 140 ) if @user.email.present? %>
+    <h1><%= @user.username %></h1>
+    <%= content_tag :em, @user.email if @user.email.present? %>
     <br>
     <%= link_to "Import bands from Spotify", "/auth/spotify" unless !current_user?( @user ) %>
 	</center>

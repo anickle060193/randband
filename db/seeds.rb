@@ -1,4 +1,4 @@
-User.create!( name: "Tester McFirst",
+User.create!( username: "test",
               email: "test@test.com",
               password: "testing",
               password_confirmation: "testing",
@@ -7,15 +7,9 @@ User.create!( name: "Tester McFirst",
               activated_at: Time.zone.now )
 
 10.times do |n|
-  name = Faker::Name.name
-  email = "test#{n+1}@test.com"
-  password = "testing"
-  User.create!( name: name,
-                email: email,
-                password: password,
-                password_confirmation: password,
-                activated: true,
-                activated_at: Time.zone.now )
+  User.create!( username: Faker::Name.name.split().join( '.' ),
+                password: "testing",
+                password_confirmation: "testing" )
 end
 
 artists = [

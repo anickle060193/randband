@@ -26,6 +26,6 @@
   <% end %>
 <% end %>
 
-<% if !found %>
+<% if !found && params[ :search ].present? %>
   <h4>No bands found...</h4>
 <% end %>

@@ -69,3 +69,13 @@ textarea
 {
   resize: vertical;
 }
+
+[data-required=true]:after
+{
+  @extend .small;
+  @extend .text-muted;
+  content: "required";
+  font-variant: small-caps;
+  text-rendering: auto;
+  padding-left: 4px;
+}

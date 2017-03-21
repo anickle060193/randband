@@ -4,7 +4,7 @@
 
   <% if @user.new_record? %>
     <div class="form-group">
-      <%= f.label :username, class: "control-label" %>
+      <%= f.label :username, class: "control-label", data: { required: true } %>
       <%= f.text_field :username, class: "form-control", pattern: "[a-zA-Z0-9]+", title: "Username can only contain letters and numbers." %>
     </div>
   <% end %>
@@ -15,12 +15,12 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :password, class: "control-label" %>
+    <%= f.label :password, class: "control-label", data: { required: @user.new_record? } %>
     <%= f.password_field :password, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, "Password Confirmation", class: "control-label" %>
+    <%= f.label :password_confirmation, "Password Confirmation", class: "control-label", data: { required: @user.new_record? } %>
     <%= f.password_field :password_confirmation, class: "form-control" %>
   </div>
 

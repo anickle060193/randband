@@ -1,7 +1,7 @@
 window.App ||= { }
 
 App.init = ->
-  $( "a, span, i, div" ).tooltip()
+  return
 
 App.ready = ( callback ) ->
   $( document ).on( "turbolinks:load", callback )

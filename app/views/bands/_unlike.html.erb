@@ -1,4 +1,4 @@
-<%= form_for( current_user.band_likes.find_by( band: @band ), method: :delete ) do |f| %>
+<%= form_for current_user.band_likes.find_by( band: @band ), method: :delete, remote: true do |f| %>
   <div><%= hidden_field_tag :band_id, @band.id %></div>
   <%= f.submit "Unlike", class: "btn btn-link" %>
 <% end %>

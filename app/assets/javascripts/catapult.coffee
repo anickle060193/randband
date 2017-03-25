@@ -1,4 +1,4 @@
-App.pageReady "static_pages", "catapult", ->
+RandBand.pageReady "static_pages", "catapult", ->
   # commonly used modules
   Engine = Matter.Engine
   Render = Matter.Render

@@ -13,19 +13,28 @@
 
 <br>
 
-<% found = false %>
+<% if @bands.any? %>
+  <ul class="nav nav-pills nav-justified band-index-tabs" role="tablist">
+    <% @titles.zip( @providers ) do |title, provider| %>
+      <li role="presentation" class="<%= "active" if provider == params[ :provider ] %>">
+        <%= link_to title, "##{provider}", class: "band-tab", "aria-controls": title, role: "tab", data: { toggle: "tab", provider: provider } %>
+      </li>
+    <% end %>
+  </ul>
 
-<% @titles.zip( @providers ).each do |title, provider| %>
-  <% if @bands[ provider ].present? %>
-    <% found = true %>
-    <%= content_tag :h4, title %>
-    <div class="list-group">
-      <%= render @bands[ provider ] %>
-    </div>
-    <%= will_paginate @bands[ provider ], param_name: "#{provider}_page" %>
-  <% end %>
-<% end %>
+  <div class="tab-content">
+    <% @providers.each do |provider| %>
+      <div role="tabpanel", class="tab-pane <%= "active" if provider == params[ :provider ] %>", id="<%= provider.parameterize %>">
+        <% if @bands[ provider ].any? %>
+          <div class="list-group">
+            <%= render @bands[ provider ] %>
+          </div>
 
-<% if !found && params[ :search ].present? %>
-  <h4>No bands found...</h4>
+          <%= will_paginate @bands[ provider ], param_name: "#{provider}_page", inner_window: 1, outer_window: 0 %>
+        <% else %>
+          <h4>No bands found...</h4>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% end %>

@@ -1,3 +1,5 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+RandBand.ready ->
+  $( "a.band-tab" ).click ->
+    url = new Url()
+    url.query.provider = this.getAttribute( "data-provider" )
+    history.replaceState( null, null, url.toString() )

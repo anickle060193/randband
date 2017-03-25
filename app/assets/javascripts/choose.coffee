@@ -20,7 +20,7 @@ selectNone = ->
   $( "input[type=checkbox]" ).parent().removeClass( "active" )
   updateShortcutButtons()
 
-App.pageReady "choose", "chooser", ->
+RandBand.pageReady "choose", "chooser", ->
   updateShortcutButtons()
   $( "[data-behavior='genre']" ).change( updateShortcutButtons )
   $( "[data-behavior='select-all']" ).click( selectAll )

@@ -1,15 +1,15 @@
-window.App ||= { }
+window.RandBand ||= { }
 
-App.init = ->
+RandBand.init = ->
   return
 
-App.ready = ( callback ) ->
+RandBand.ready = ( callback ) ->
   $( document ).on( "turbolinks:load", callback )
 
-App.pageReady = ( controller, action, callback ) ->
-  App.ready ->
+RandBand.pageReady = ( controller, action, callback ) ->
+  RandBand.ready ->
     selector = "[data-controller='#{controller}'][data-action='#{action}']"
     callback() if $( selector ).length > 0
 
-App.ready ->
-  App.init()
+RandBand.ready ->
+  RandBand.init()

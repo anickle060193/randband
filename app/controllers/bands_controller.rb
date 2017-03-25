@@ -4,21 +4,22 @@ class BandsController < ApplicationController
   before_action :logged_in_user, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :correct_user, only: [ :edit, :update, :destroy ]
 
-  BANDS_PER_PROVIDER_PER_PAGE = 8
+  BANDS_PER_PROVIDER_PER_PAGE = 12
 
   def index
     @titles = [ "Spotify Bands", "User Created Bands" ]
     @providers = [ Band::SPOTIFY_PROVIDER, Band::CUSTOM_PROVIDER ]
 
+    params[ :provider ] = @providers.first unless @providers.include?( params[ :provider ] )
+
     @bands = { }
 
-    custom_bands = Band.where( provider: Band::CUSTOM_PROVIDER ).order_by_name
     if params[ :search ].present?
-      custom_bands = custom_bands.where( "name LIKE :search", search: "%#{params[ :search ]}%" )
-    end
-    @bands[ Band::CUSTOM_PROVIDER ] = custom_bands.paginate( page: params[ :custom_page ] || 1, per_page: BANDS_PER_PROVIDER_PER_PAGE )
+      @bands[ Band::CUSTOM_PROVIDER ] = Band.where( provider: Band::CUSTOM_PROVIDER )
+                                            .where( "name LIKE :search", search: "%#{params[ :search ]}%" )
+                                            .order_by_name
+                                            .paginate( page: params[ :custom_page ] || 1, per_page: BANDS_PER_PROVIDER_PER_PAGE )
 
-    if params[ :search ].present?
       @bands[ Band::SPOTIFY_PROVIDER ] = WillPaginate::Collection.create( params[ :spotify_page ] || 1, BANDS_PER_PROVIDER_PER_PAGE ) do |pager|
         begin
           spotify_bands = RSpotify::Artist.search( params[ :search ], limit: pager.per_page, offset: pager.offset )

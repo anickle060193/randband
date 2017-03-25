@@ -1,0 +1,23 @@
+.field_with_errors
+{
+  @extend .has-error;
+  .form-control
+  {
+    color: $state-danger-text;
+  }
+}
+
+textarea
+{
+  resize: vertical;
+}
+
+[data-required=true]:after
+{
+  @extend .small;
+  @extend .text-muted;
+  content: "required";
+  font-variant: small-caps;
+  text-rendering: auto;
+  padding-left: 4px;
+}

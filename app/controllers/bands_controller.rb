@@ -18,16 +18,15 @@ class BandsController < ApplicationController
       @bands[ Band::CUSTOM_PROVIDER ] = Band.where( provider: Band::CUSTOM_PROVIDER )
                                             .where( "name LIKE :search", search: "%#{params[ :search ]}%" )
                                             .order_by_name
-                                            .paginate( page: params[ :custom_page ] || 1, per_page: BANDS_PER_PROVIDER_PER_PAGE )
+                                            .page( params[ :custom_page ] ).per( BANDS_PER_PROVIDER_PER_PAGE )
 
-      @bands[ Band::SPOTIFY_PROVIDER ] = WillPaginate::Collection.create( params[ :spotify_page ] || 1, BANDS_PER_PROVIDER_PER_PAGE ) do |pager|
-        begin
-          spotify_bands = RSpotify::Artist.search( params[ :search ], limit: pager.per_page, offset: pager.offset )
-          pager.replace( spotify_bands.map { |spotify_band| Band.from_spotify_band( spotify_band ) } )
-          pager.total_entries ||= spotify_bands.total
-        rescue RestClient::Unauthorized
-          flash.now[ :danger ] = "Something went wrong with the search. Try again?"
-        end
+      begin
+        offset = ( ( params[ :spotify_page ]&.to_i || 1 ) - 1 ) * BANDS_PER_PROVIDER_PER_PAGE
+        spotify_bands = RSpotify::Artist.search( params[ :search ], limit: BANDS_PER_PROVIDER_PER_PAGE, offset: offset )
+        converted_spotify_bands = spotify_bands.map { |sb| Band.from_spotify_band( sb, try_find: false ) }
+        @bands[ Band::SPOTIFY_PROVIDER ] = Kaminari.paginate_array( converted_spotify_bands, limit: BANDS_PER_PROVIDER_PER_PAGE, offset: offset, total_count: spotify_bands.total )
+      rescue RestClient::Unauthorized
+        flash.now[ :danger ] = "Something went wrong with the Spotify search. Try again?"
       end
     end
   end

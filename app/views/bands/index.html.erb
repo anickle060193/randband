@@ -25,12 +25,12 @@
   <div class="tab-content">
     <% @providers.each do |provider| %>
       <div role="tabpanel", class="tab-pane <%= "active" if provider == params[ :provider ] %>", id="<%= provider.parameterize %>">
-        <% if @bands[ provider ].any? %>
+        <% if @bands[ provider ]&.any? %>
           <div class="list-group">
             <%= render @bands[ provider ] %>
           </div>
 
-          <%= will_paginate @bands[ provider ], param_name: "#{provider}_page", inner_window: 1, outer_window: 0 %>
+          <%= paginate @bands[ provider ], param_name: "#{provider}_page", params: { provider: provider } %>
         <% else %>
           <h4>No bands found...</h4>
         <% end %>

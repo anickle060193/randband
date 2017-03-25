@@ -20,7 +20,7 @@
         <%= render @liked_bands %>
       </div>
 
-      <%= will_paginate @liked_bands, param_name: :liked_bands_page, inner_window: 0, outer_window: 0 %>
+      <%= paginate @liked_bands, param_name: :liked_bands_page %>
     <% end %>
   </div>
 
@@ -32,7 +32,7 @@
         <%= render @created_bands %>
       </div>
 
-      <%= will_paginate @created_bands, param_name: :created_bands_page, inner_window: 0, outer_window: 0 %>
+      <%= paginate @created_bands, param_name: :created_bands_page %>
     <% end %>
   </div>
 

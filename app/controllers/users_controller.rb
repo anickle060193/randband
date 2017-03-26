@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_action :find_user, only: [ :show, :edit, :update, :destroy ]
+  before_action :find_user, only: [ :show, :edit, :update, :adminify, :destroy ]
   before_action :logged_in_user, only: [ :edit, :update, :spotify ]
   before_action :correct_user, only: [ :edit, :update ]
-  before_action :admin_user, only: [ :destroy ]
+  before_action :admin_user, only: [ :adminify, :destroy ]
 
   BANDS_PER_PAGE = 7
 
@@ -49,10 +49,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def adminify
+    @user.update( admin: true ) unless @user.admin?
+    redirect_back_or @user
+  end
+
   def destroy
     @user.destroy!
     flash[ :info ] = "User deleted."
-    redirect_to users_url
+    redirect_back_or root_url
   end
 
   def spotify
@@ -101,11 +106,11 @@ class UsersController < ApplicationController
     end
 
     def correct_user
-      redirect_to( @user ) unless current_user?( @user )
+      redirect_back_or( @user ) unless ( current_user?( @user ) || ( admin? && !@user.admin? ) )
     end
 
     def admin_user
-      redirect_to( root_url ) unless admin?
+      redirect_back_or( @user ) if ( !admin? || @user.admin? )
     end
 
 end

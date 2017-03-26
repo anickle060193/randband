@@ -61,18 +61,20 @@ class BandsController < ApplicationController
   end
 
   def update
+    user = @band.provider == Band::CUSTOM_PROVIDER ? @band.user : nil
+
     new_genre_names = entered_genres.map { |s| s.downcase }
-    current_genre_names = @band.genres.where( user: current_user ).order( :genre ).pluck( :genre )
+    current_genre_names = @band.genres.where( user: user ).order( :genre ).pluck( :genre )
 
     @band.genres.where( genre: current_genre_names - new_genre_names ).destroy_all
 
     ( new_genre_names - current_genre_names ).each do |genre|
-      @band.genres.create!( genre: genre, user: current_user )
+      @band.genres.create!( genre: genre, user: user )
     end
 
     if @band.update( band_params.except( :genres ) )
       flash[ :success ] = "Band updated"
-      redirect_to band_link( @band )
+      redirect_back_or band_link( @band )
     else
       render :edit
     end
@@ -81,7 +83,7 @@ class BandsController < ApplicationController
   def destroy
     @band.destroy!
     flash[ :info ] = "Band deleted"
-    redirect_to bands_url
+    redirect_back_or bands_url
   end
 
   private
@@ -108,7 +110,11 @@ class BandsController < ApplicationController
     def correct_user
       band = Band.find_by( id: params[ :id ] )
       band ||= Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
-      redirect_to band_link( band ) unless current_user?( band.user )
+      if band.provider == Band::CUSTOM_PROVIDER
+        redirect_back_or band_link( band ) unless current_user?( band.user ) || admin?
+      else
+        redirect_back_or band_link( band ) unless admin?
+      end
     end
 
 end

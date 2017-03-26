@@ -10,6 +10,8 @@
       <th>Creator</th>
       <th>Created At</th>
       <th>Updated At</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -24,6 +26,8 @@
         <%= content_tag :td, ( link_to( band.user.username, band.user ) if band.user.present? ) %>
         <%= content_tag :td, band.created_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
         <%= content_tag :td, band.updated_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
+        <%= content_tag :td, link_to( "Edit", edit_band_link( band ) ) %>
+        <%= content_tag :td, link_to( "Delete", band, method: :delete, data: { confirm: "You sure?" } ) %>
       </tr>
     <% end %>
   </tbody>

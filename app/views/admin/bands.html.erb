@@ -1,3 +1,7 @@
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#filterModal">
+  Filter Bands
+</button>
+
 <table class="table table-hover">
   <thead>
     <tr>
@@ -34,3 +38,64 @@
 </table>
 
 <%= paginate @bands %>
+
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="filterModalLabel">Filter Bands</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag admin_bands_path, method: :get, id: "filterForm", class: "form-horizontal" do %>
+          <div class="form-group">
+            <%= label_tag :id, "ID:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :id, params[ :id ], class: "form-control", autocomplete: "none", autocapitalize: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :name, "Name:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :name, params[ :name ], class: "form-control", autocomplete: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :provider, "Provider:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= select_tag :provider, options_for_select( [ "" ] + Band::PROVIDERS, params[ :provider ] ), class: "form-control", autocomplete: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :provider_id, "Provider ID:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :provider_id, params[ :provider_id ], class: "form-control", autocomplete: "none", autocapitalize: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :thumbnail, "Thumbnail:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :thumbnail, params[ :thumbnail ], class: "form-control", autocomplete: "none", autocapitalize: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :external_url, "External URL:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :external_url, params[ :external_url ], class: "form-control", autocomplete: "none", autocapitalize: "none" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :user, "Creator:", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= text_field_tag :user, params[ :user ], class: "form-control", autocomplete: "none" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-form-submit="#filterForm">Filter</button>
+      </div>
+    </div>
+  </div>
+</div>

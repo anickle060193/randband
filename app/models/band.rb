@@ -16,6 +16,8 @@ class Band < ApplicationRecord
   CUSTOM_PROVIDER = "custom"
   SPOTIFY_PROVIDER = "spotify"
 
+  PROVIDERS = [ CUSTOM_PROVIDER, SPOTIFY_PROVIDER ]
+
   def self.find_by_provider( provider, provider_id )
     b = Band.find_by( provider: provider, provider_id: provider_id )
     return b unless b.nil?

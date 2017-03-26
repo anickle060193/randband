@@ -11,10 +11,16 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <%= navbar_link_item( "Home", root_path ) %>
-        <%= navbar_link_item( "Bands", bands_path ) if logged_in? %>
-        <%= navbar_link_item( "Add Band", new_band_path ) if logged_in? %>
-        <%= navbar_link_item( "Choose!", chooser_path ) if logged_in? %>
+        <% if controller_name != "admin" %>
+          <%= navbar_link_item( "Home", root_path ) %>
+          <%= navbar_link_item( "Bands", bands_path ) if logged_in? %>
+          <%= navbar_link_item( "Add Band", new_band_path ) if logged_in? %>
+          <%= navbar_link_item( "Choose!", chooser_path ) if logged_in? %>
+        <% else %>
+          <%= navbar_link_item( "Admin", admin_home_path ) %>
+          <%= navbar_link_item( "Users", admin_users_path ) %>
+          <%= navbar_link_item( "Bands", admin_bands_path ) %>
+        <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>
@@ -23,6 +29,10 @@
             <ul class="dropdown-menu">
               <li><%= link_to "Profile", current_user %></li>
               <li><%= link_to "Settings", edit_user_path( current_user ) %></li>
+              <% if admin? %>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to "Admin", admin_home_path %></li>
+              <% end %>
               <li role="separator" class="divider"></li>
               <li><%= link_to "Log out", logout_path, method: :delete %></li>
             </ul>

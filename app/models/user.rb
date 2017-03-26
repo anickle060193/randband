@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :band_likes, dependent: :destroy
   has_many :bands, through: :band_likes
 
+  scope :order_by_username, -> { order( "LOWER( username )" ) }
+
   before_validation :fix_email
 
   VALID_USERNAME_REGEX = /\A[a-zA-Z0-9]+\z/

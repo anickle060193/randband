@@ -26,4 +26,10 @@ Rails.application.routes.draw do
 
   get '/chooser', to: "choose#chooser", as: :chooser
   get '/choose', to: "choose#choose", as: :choose
+
+  scope '/admin' do
+    get '/', to: "admin#home", as: :admin_home
+    get '/users', to: "admin#users", as: :admin_users
+    get '/bands', to: "admin#bands", as: :admin_bands
+  end
 end

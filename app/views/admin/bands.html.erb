@@ -1,0 +1,32 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Provider</th>
+      <th>Provider ID</th>
+      <th>Thumbnail</th>
+      <th>External URL</th>
+      <th>Creator</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bands.each do |band| %>
+      <tr>
+        <%= content_tag :td, band.id %>
+        <%= content_tag :td, link_to( band.name, band_link( band ) ) %>
+        <%= content_tag :td, band.provider %>
+        <%= content_tag :td, band.provider_id %>
+        <%= content_tag :td, ( image_tag( band.thumbnail ) if band.thumbnail.present? ) %>
+        <%= content_tag :td, ( link_to( "[Link]", band.external_url ) if band.external_url.present? ) %>
+        <%= content_tag :td, ( link_to( band.user.username, band.user ) if band.user.present? ) %>
+        <%= content_tag :td, band.created_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
+        <%= content_tag :td, band.updated_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @bands %>

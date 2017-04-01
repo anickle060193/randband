@@ -17,6 +17,7 @@ gem 'faker',                    '1.7.3'
 gem 'rspotify',                 '1.19.1'
 gem 'i18n',                     '0.8.1'
 gem 'kaminari',                 '1.0.1'
+gem 'autoprefixer-rails',       '6.7.7.1'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-holderjs',  '2.9.4'

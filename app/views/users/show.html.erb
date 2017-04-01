@@ -2,7 +2,11 @@
 
 <div class="span3 well">
   <center>
-    <%= gravatar_tag( @user, size: 140 ) if @user.email.present? %>
+    <% if @user.email.present? %>
+      <%= gravatar_tag( @user, size: 140 ) %>
+    <% else %>
+      <img data-src="holder.js/800x600?text=&#63;&size=48&auto=true" alt="<%= @user.username %>" class="img-thumbnail">
+    <% end %>
     <h1><%= @user.username %></h1>
     <%= content_tag :em, @user.email if @user.email.present? %>
     <br>

@@ -2,7 +2,11 @@
 
 <div class="span3 well">
   <center>
-    <%= image_tag( @band.thumbnail, alt: @band.name, style: "max-height:200px", class: "img-thumbnail" ) unless @band.thumbnail.blank? %>
+    <% if @band.thumbnail.present? %>
+      <%= image_tag( @band.thumbnail, alt: @band.name, class: "img-thumbnail" ) %>
+    <% else %>
+      <img data-src="holder.js/800x600?text=&#63;&size=48&auto=true" alt="<%= @band.name %>" class="img-thumbnail">
+    <% end %>
     <% if @band.external_url.blank? %>
       <h1><%= @band.name %></h1>
     <% else %>

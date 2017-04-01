@@ -1,0 +1,4 @@
+<% if !@bands[ provider ].last_page? %>
+  <% path = path_to_next_page( @bands[ provider ], param_name: "#{provider}_page", params: { provider: provider } ) %>
+  <%= button_to "Load More", path, method: :get, remote: true, data: { disable_with: "Load More" }, class: "btn btn-primary btn-block btn-lg", form: { data: { load_more: provider } }, form_class: "bands-load-more" %>
+<% end %>

@@ -1,7 +1,8 @@
 window.RandBand ||= { }
 
 RandBand.init = ->
-  return
+  salvattore.init()
+  Holder.run()
 
 RandBand.ready = ( callback ) ->
   $( document ).on( "turbolinks:load", callback )

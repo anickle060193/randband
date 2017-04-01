@@ -29,6 +29,8 @@ class BandsController < ApplicationController
         flash.now[ :danger ] = "Something went wrong with the Spotify search. Try again?"
       end
     end
+
+    respond_to( :html, :js )
   end
 
   def show

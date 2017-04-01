@@ -17,7 +17,7 @@
       <h2>Liked Bands</h2>
 
       <div class="list-group">
-        <%= render @liked_bands %>
+        <%= render partial: "bands/band_compact", collection: @liked_bands, as: :band %>
       </div>
 
       <%= paginate @liked_bands, param_name: :liked_bands_page %>
@@ -29,7 +29,7 @@
       <h2>Created Bands</h2>
 
       <div class="list-group">
-        <%= render @created_bands %>
+        <%= render partial: "bands/band_compact", collection: @created_bands, as: :band %>
       </div>
 
       <%= paginate @created_bands, param_name: :created_bands_page %>

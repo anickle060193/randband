@@ -6,5 +6,6 @@
 //= require init
 //= require matter
 //= require url
+//= require holderjs
 
 //= require_tree .

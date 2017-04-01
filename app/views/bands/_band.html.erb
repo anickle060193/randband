@@ -1,3 +1,12 @@
-<%= link_to band_link( band ), class: "list-group-item" do %>
-  <%= band.name %>
+<%= link_to band_link( band ) do %>
+  <div class="thumbnail band new-band">
+    <% if band.thumbnail.present? %>
+      <%= image_tag band.thumbnail, alt: band.name %>
+    <% else %>
+      <img data-src="holder.js/800x600?text=&#63;&size=48&auto=true" alt="<%= band.name %>">
+    <% end %>
+    <div class="caption text-center">
+      <h3><%= band.name %></h3>
+    </div>
+  </div>
 <% end %>

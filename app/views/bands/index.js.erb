@@ -1,0 +1,13 @@
+var grid = $( "[data-grid='<%= params[ :provider ] %>']" )[ 0 ];
+
+var newBandsHtml = [
+<% @bands[ params[ :provider ] ].each do |b| %>
+  $( "<%= escape_javascript( render( b ) ) %>" )[ 0 ],
+<% end %>
+];
+
+salvattore.appendElements( grid, newBandsHtml );
+
+$( "[data-load-more='<%= params[ :provider ] %>']" ).replaceWith( $( "<%= escape_javascript( render( partial: "load_more", locals: { provider: params[ :provider ] } ) ) %>" ) );
+
+Holder.run();

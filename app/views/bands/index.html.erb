@@ -2,7 +2,7 @@
 
 <%= form_tag bands_url, method: :get, class: "form-horizontal" do %>
   <div class="input-group input-group-lg">
-    <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Search for a band...", autofocus: params[ :search ].blank? %>
+    <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Search for a band...", autofocus: params[ :search ].blank?, autocomplete: "none" %>
     <span class="input-group-btn">
       <button type="submit" class="btn btn-default" title="Search Bands">
         <span class="glyphicon glyphicon-search"></span>
@@ -14,7 +14,7 @@
 <br>
 
 <% if @bands.any? %>
-  <ul class="nav nav-pills nav-justified band-index-tabs" role="tablist">
+  <ul class="nav nav-pills nav-justified bands-index-tabs" role="tablist">
     <% @titles.zip( @providers ) do |title, provider| %>
       <li role="presentation" class="<%= "active" if provider == params[ :provider ] %>">
         <%= link_to title, "##{provider}", class: "band-tab", "aria-controls": title, role: "tab", data: { toggle: "tab", provider: provider } %>
@@ -26,11 +26,12 @@
     <% @providers.each do |provider| %>
       <div role="tabpanel", class="tab-pane <%= "active" if provider == params[ :provider ] %>", id="<%= provider.parameterize %>">
         <% if @bands[ provider ]&.any? %>
-          <div class="list-group">
+          <div class="row" data-grid="<%= provider %>" data-columns>
             <%= render @bands[ provider ] %>
           </div>
 
-          <%= paginate @bands[ provider ], param_name: "#{provider}_page", params: { provider: provider } %>
+          <%= render partial: "load_more", locals: { provider: provider } %>
+
         <% else %>
           <h4>No bands found...</h4>
         <% end %>

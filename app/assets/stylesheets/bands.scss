@@ -1,4 +1,56 @@
-.band-index-tabs
+[data-grid][data-columns]::before
+{
+  @media ( max-width: $screen-xs-max )
+  {
+    content: '2.col-xs-6';
+  }
+
+  @media ( min-width: $screen-sm-min ) and ( max-width: $screen-sm-max )
+  {
+    content: '2.col-sm-6';
+  }
+
+  @media ( min-width: $screen-md-min ) and ( max-width: $screen-md-max )
+  {
+    content: '3.col-md-4';
+  }
+
+  @media ( min-width: $screen-lg-min )
+  {
+    content: '4.col-lg-3';
+  }
+}
+
+.bands-index-tabs
 {
   padding-bottom: 20px;
+}
+
+.bands-load-more
+{
+  margin-bottom: 30px;
+}
+
+.band .caption h3
+{
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.new-band
+{
+  opacity: 0;
+  transform: scaleY( 0 );
+  transform: translateY( 100% );
+  animation: addBand .5s ease forwards;
+}
+
+@keyframes addBand
+{
+  to
+  {
+    opacity: 1;
+    transform: scaleY( 1 );
+    transform: translateY( 0 );
+  }
 }

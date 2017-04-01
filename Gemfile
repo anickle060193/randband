@@ -18,6 +18,10 @@ gem 'rspotify',                 '1.19.1'
 gem 'i18n',                     '0.8.1'
 gem 'kaminari',                 '1.0.1'
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-holderjs',  '2.9.4'
+end
+
 group :development, :test do
   gem 'sqlite3', '1.3.12'
   gem 'byebug',  '9.0.0', platform: :mri

@@ -17,6 +17,8 @@ module RandBand
     # Include the authenticity token in remote forms.
     config.action_view.embed_authenticity_token_in_remote_forms = true
 
+    config.analytics = config_for( :analytics )
+
     RSpotify::authenticate( Rails.application.secrets.spotify_id, Rails.application.secrets.spotify_secret )
 
   end

@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :band_likes, dependent: :destroy
   has_many :bands, through: :band_likes
 
+  before_destroy :destroy_band_references
+
   scope :order_by_username, -> { order( "LOWER( username )" ) }
 
   before_validation :fix_email
@@ -95,5 +97,9 @@ class User < ApplicationRecord
       self.activation_token = User.new_token
       self.activation_digest = User.digest( activation_token )
       save!
+    end
+
+    def destroy_band_references
+      Band.where( user: self ).update( user: nil )
     end
 end

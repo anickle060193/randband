@@ -11,7 +11,7 @@ class Band < ApplicationRecord
   validates :provider_id, presence: true, uniqueness: { scope: :provider }
   validates :thumbnail, url: true
   validates :external_url, url: true
-  validates :user_id, presence: true, if: Proc.new { |band| band.provider == CUSTOM_PROVIDER }
+  validates :user_id, presence: true, if: Proc.new { |band| band.provider == CUSTOM_PROVIDER }, on: :create
 
   CUSTOM_PROVIDER = "custom"
   SPOTIFY_PROVIDER = "spotify"

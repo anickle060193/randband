@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319235108) do
+ActiveRecord::Schema.define(version: 20170402075640) do
 
   create_table "band_likes", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -37,12 +37,10 @@ ActiveRecord::Schema.define(version: 20170319235108) do
   create_table "genres", force: :cascade do |t|
     t.text     "genre",      null: false
     t.integer  "band_id",    null: false
-    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["band_id"], name: "index_genres_on_band_id"
     t.index ["genre"], name: "index_genres_on_genre"
-    t.index ["user_id"], name: "index_genres_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

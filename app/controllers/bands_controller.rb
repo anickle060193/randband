@@ -48,7 +48,7 @@ class BandsController < ApplicationController
 
     if @band.save
       entered_genres.each do |genre|
-        @band.genres.create( genre: genre, user: current_user )
+        @band.genres.create( genre: genre )
       end
 
       flash[ :success ] = "Band created!"
@@ -63,15 +63,13 @@ class BandsController < ApplicationController
   end
 
   def update
-    user = @band.provider == Band::CUSTOM_PROVIDER ? @band.user : nil
-
     new_genre_names = entered_genres.map { |s| s.downcase }
-    current_genre_names = @band.genres.where( user: user ).order( :genre ).pluck( :genre )
+    current_genre_names = @band.genres.order( :genre ).pluck( :genre )
 
     @band.genres.where( genre: current_genre_names - new_genre_names ).destroy_all
 
     ( new_genre_names - current_genre_names ).each do |genre|
-      @band.genres.create!( genre: genre, user: user )
+      @band.genres.create!( genre: genre )
     end
 
     if @band.update( band_params.except( :genres ) )
@@ -110,12 +108,10 @@ class BandsController < ApplicationController
     end
 
     def correct_user
-      band = Band.find_by( id: params[ :id ] )
-      band ||= Band.find_by_provider( params[ :provider ], params[ :provider_id ] )
-      if band.provider == Band::CUSTOM_PROVIDER
-        redirect_back_or band_link( band ) unless current_user?( band.user ) || admin?
+      if @band.provider == Band::CUSTOM_PROVIDER
+        redirect_back_or band_link( @band ) unless current_user?( @band.user ) || admin?
       else
-        redirect_back_or band_link( band ) unless admin?
+        redirect_back_or band_link( @band ) unless admin?
       end
     end
 

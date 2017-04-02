@@ -21,6 +21,7 @@ gem 'autoprefixer-rails',       '6.7.7.1'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-holderjs',  '2.9.4'
+  gem 'rails-assets-matter-js', '0.12.0'
 end
 
 group :development, :test do

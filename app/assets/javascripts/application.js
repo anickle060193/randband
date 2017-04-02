@@ -4,7 +4,7 @@
 //= require bootstrap
 
 //= require init
-//= require matter
+//= require matter-js
 //= require url
 //= require holderjs
 

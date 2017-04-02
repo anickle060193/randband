@@ -1,9 +1,13 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+johnsmith:
+  id: 0
+  username: johnsmith
+  email: john.smith@test.com
+  admin: true
+  activated: true
 
-one:
-  name: MyString
-  email: MyString
-
-two:
-  name: MyString
-  email: MyString
+janesmith:
+  id: 1
+  username: janesmith
+  email: jane.smith@test.com
+  admin: false
+  activated: false

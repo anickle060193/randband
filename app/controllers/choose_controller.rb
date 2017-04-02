@@ -11,7 +11,7 @@ class ChooseController < ApplicationController
   end
 
   def chooser
-    @genres = Genre.where( band: current_user.bands ).distinct.order( :genre ).pluck( :genre )
+    @genres = Genre.where( band: current_user.bands ).distinct.pluck( :genre )
   end
 
 end

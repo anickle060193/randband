@@ -7,7 +7,7 @@ User.create!( username: "test",
               activated_at: Time.zone.now )
 
 10.times do |n|
-  User.create!( username: Faker::Name.name.split().join( '.' ),
+  User.create!( username: Faker::Name.name.gsub( /[^0-9a-z]/i, '' ),
                 password: "testing",
                 password_confirmation: "testing" )
 end

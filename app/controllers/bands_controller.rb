@@ -16,8 +16,7 @@ class BandsController < ApplicationController
 
     if params[ :search ].present?
       @bands[ Band::CUSTOM_PROVIDER ] = Band.where( provider: Band::CUSTOM_PROVIDER )
-                                            .where( "name LIKE :search", search: "%#{params[ :search ]}%" )
-                                            .order_by_name
+                                            .where( "name ILIKE :search", search: "%#{params[ :search ]}%" )
                                             .page( params[ :custom_page ] ).per( BANDS_PER_PROVIDER_PER_PAGE )
 
       begin
@@ -64,7 +63,7 @@ class BandsController < ApplicationController
 
   def update
     new_genre_names = entered_genres.map { |s| s.downcase }
-    current_genre_names = @band.genres.order( :genre ).pluck( :genre )
+    current_genre_names = @band.genres.pluck( :genre )
 
     @band.genres.where( genre: current_genre_names - new_genre_names ).destroy_all
 

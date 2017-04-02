@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   BANDS_PER_PAGE = 7
 
   def show
-    @liked_bands = @user.bands.order_by_name.page( params[ :liked_bands_page ] ).per( BANDS_PER_PAGE )
+    @liked_bands = @user.bands.page( params[ :liked_bands_page ] ).per( BANDS_PER_PAGE )
     @created_bands = Band.where( user: @user ).page( params[ :created_bands_page ] ).per( BANDS_PER_PAGE )
     if current_user?( @user ) && @user.email.present? && !@user.activated
       flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."

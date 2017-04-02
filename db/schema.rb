@@ -12,12 +12,15 @@
 
 ActiveRecord::Schema.define(version: 20170402075640) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "band_likes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "band_id", null: false
-    t.index ["band_id"], name: "index_band_likes_on_band_id"
-    t.index ["user_id", "band_id"], name: "index_band_likes_on_user_id_and_band_id", unique: true
-    t.index ["user_id"], name: "index_band_likes_on_user_id"
+    t.index ["band_id"], name: "index_band_likes_on_band_id", using: :btree
+    t.index ["user_id", "band_id"], name: "index_band_likes_on_user_id_and_band_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_band_likes_on_user_id", using: :btree
   end
 
   create_table "bands", force: :cascade do |t|
@@ -29,9 +32,9 @@ ActiveRecord::Schema.define(version: 20170402075640) do
     t.integer  "user_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["name"], name: "index_bands_on_name", unique: true
-    t.index ["provider", "provider_id"], name: "index_bands_on_provider_and_provider_id", unique: true
-    t.index ["user_id"], name: "index_bands_on_user_id"
+    t.index ["name"], name: "index_bands_on_name", unique: true, using: :btree
+    t.index ["provider", "provider_id"], name: "index_bands_on_provider_and_provider_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_bands_on_user_id", using: :btree
   end
 
   create_table "genres", force: :cascade do |t|
@@ -39,8 +42,8 @@ ActiveRecord::Schema.define(version: 20170402075640) do
     t.integer  "band_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["band_id"], name: "index_genres_on_band_id"
-    t.index ["genre"], name: "index_genres_on_genre"
+    t.index ["band_id"], name: "index_genres_on_band_id", using: :btree
+    t.index ["genre"], name: "index_genres_on_genre", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,8 +59,12 @@ ActiveRecord::Schema.define(version: 20170402075640) do
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.string   "username",                          null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "band_likes", "bands"
+  add_foreign_key "band_likes", "users"
+  add_foreign_key "bands", "users"
+  add_foreign_key "genres", "bands"
 end

@@ -4,7 +4,7 @@ class Band < ApplicationRecord
   belongs_to :user, optional: true
   has_many :genres, dependent: :destroy
 
-  scope :order_by_name, -> { order( "LOWER( name )" ) }
+  default_scope { order( "LOWER( name )" ) }
 
   validates :name, presence: true, uniqueness: true
   validates :provider, presence: true

@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   before_destroy :destroy_band_references
 
-  scope :order_by_username, -> { order( "LOWER( username )" ) }
+  default_scope { order( "LOWER( username )" ) }
 
   before_validation :fix_email
 

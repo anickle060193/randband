@@ -7,7 +7,7 @@ class UserMailerTest < ActionMailer::TestCase
     mail = UserMailer.account_activation( u )
     assert_equal "RandBand Account Activation", mail.subject
     assert_equal [ "john.smith@test.com" ], mail.to
-    assert_equal [ "noreply@randband.herokuapp.com" ], mail.from
+    assert_equal [ "noreply@rand.band" ], mail.from
     assert_match "Hello johnsmith", mail.body.encoded
   end
 
@@ -17,7 +17,7 @@ class UserMailerTest < ActionMailer::TestCase
     mail = UserMailer.password_reset( u )
     assert_equal "RandBand Password Reset", mail.subject
     assert_equal [ "john.smith@test.com" ], mail.to
-    assert_equal [ "noreply@randband.herokuapp.com" ], mail.from
+    assert_equal [ "noreply@rand.band" ], mail.from
     assert_match "To reset your password", mail.body.encoded
   end
 

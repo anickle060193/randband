@@ -1,18 +1,10 @@
 <% provide( :title, @band.name ) %>
 
-<div class="span3 well">
+<div class="well">
   <center>
-    <% if @band.thumbnail.present? %>
-      <%= image_tag( @band.thumbnail, alt: @band.name, class: "img-thumbnail" ) %>
-    <% else %>
-      <img data-src="holder.js/800x600?text=&#63;&size=48&auto=true" alt="<%= @band.name %>" class="img-thumbnail">
-    <% end %>
-    <% if @band.external_url.blank? %>
-      <h1><%= @band.name %></h1>
-    <% else %>
-      <h1><%= link_to @band.name, @band.external_url, target: "_blank", rel: "noopener noreferrer" %></h1>
-    <% end %>
-    <%= content_tag( :em, @band.genres.map( &:genre ).join( ", " ) ) unless @band.genres.empty? %>
+    <%= band_image_tag( @band ) %>
+    <%= band_external_link_tag( @band ) %>
+    <%= content_tag( :em, @band.genres.pluck( :genre ).join( ", " ) ) unless @band.genres.empty? %>
     <br>
     <br>
     <% if current_user?( @band.user ) %>

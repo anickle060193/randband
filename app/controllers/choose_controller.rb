@@ -8,6 +8,7 @@ class ChooseController < ApplicationController
       flash[ :warning ] = "No band found matching genres. Try again?"
       redirect_to chooser_path
     end
+    respond_to( :html, :js )
   end
 
   def chooser

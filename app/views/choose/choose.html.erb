@@ -1,9 +1,11 @@
-<div class="jumbotron">
+<% provide( :title, "Choose" ) %>
+
+<div class="well">
   <center>
-    <% if @band.external_url.blank? %>
-      <h1><%= link_to @band.name, band_link( @band ) %></h1>
-    <% else %>
-      <h1><%= link_to @band.name, @band.external_url %></h1>
-    <% end %>
-  </center>
+    <div data-content="replace">
+      <%= band_image_tag( @band ) %>
+      <%= band_external_link_tag( @band ) %>
+    </div>
+    <%= link_to "Try Again", "", class: "btn btn-default", remote: true %>
+	</center>
 </div>

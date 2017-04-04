@@ -1,6 +1,6 @@
 <% provide( :title, @user.username ) %>
 
-<div class="span3 well">
+<div class="well">
   <center>
     <% if @user.email.present? %>
       <%= gravatar_tag( @user, size: 140 ) %>

@@ -1,0 +1,25 @@
+.genre-entry
+{
+  padding: 2px 4px;
+  background-color: #5bc0de;
+  border-radius: .25em;
+  margin: 0 0 6px;
+  color: white;
+}
+
+.genre-entry-form
+{
+  @extend .genre-entry;
+  display: inline-block;
+
+  button
+  {
+    padding: 0;
+    color: white;
+
+    &:hover
+    {
+      color: darken( white, 10% );
+    }
+  }
+}

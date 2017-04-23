@@ -4,8 +4,9 @@ class Band < ApplicationRecord
   has_many :followers, through: :band_likes, source: :user, dependent: :destroy
   has_many :band_genres
   has_many :genres, through: :band_genres, dependent: :destroy
+  has_many :genre_groups, through: :genres
 
-  default_scope { order( "LOWER( name )" ) }
+  default_scope { order( :name ) }
 
   validates :name, presence: true, uniqueness: true
   validates :provider, presence: true

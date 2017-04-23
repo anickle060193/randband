@@ -4,11 +4,12 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [ :edit, :update ]
   before_action :admin_user, only: [ :adminify, :destroy ]
 
-  BANDS_PER_PAGE = 7
+  LIST_GROUP_ITEMS_PER_PAGE = 5
 
   def show
-    @liked_bands = @user.liked_bands.page( params[ :liked_bands_page ] ).per( BANDS_PER_PAGE )
-    @created_bands = @user.created_bands.page( params[ :created_bands_page ] ).per( BANDS_PER_PAGE )
+    @liked_bands = @user.liked_bands.page( params[ :liked_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
+    @created_bands = @user.created_bands.page( params[ :created_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
+    @genre_groups = @user.genre_groups.page( params[ :genre_groups_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
     if current_user?( @user ) && @user.email.present? && !@user.activated
       flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."
     end

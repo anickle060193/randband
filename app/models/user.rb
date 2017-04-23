@@ -3,7 +3,8 @@ class User < ApplicationRecord
 
   has_many :band_likes
   has_many :liked_bands, through: :band_likes, source: :band, dependent: :destroy
-  has_many :created_bands, class_name: "Band"
+  has_many :created_bands, class_name: "Band", dependent: :nullify
+  has_many :genre_groups, dependent: :destroy
 
   before_destroy :destroy_band_references
 

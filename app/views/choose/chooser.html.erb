@@ -1,20 +1,40 @@
 <center>
-  <% if @genres.any? %>
-    <h1>Select Genres:</h1>
-
-    <div class="btn-group">
-      <button class="btn btn-info" data-behavior="select-all">All</button>
-      <button class="btn btn-info" data-behavior="select-none">None</button>
-    </div>
+  <% if @genres.any? or @genre_groups.any? %>
 
     <%= form_tag choose_url, method: :get do |f| %>
-      <div data-toggle="buttons">
-        <% @genres.each_with_index do |genre, index| %>
-            <%= label_tag genre, class: "btn btn-default", style: "margin-top: 8px;" do %>
-              <%= check_box_tag "genres[]", genre, false, class: "genre-checkbox", data: { behavior: "genre" } %><%= genre %>
-            <% end %>
-        <% end %>
-      </div>
+      <% if @genre_groups.any? %>
+        <h2>Genre Groups:</h2>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" data-behavior="select-all-genre-group">All</button>
+          <button type="button" class="btn btn-info" data-behavior="select-none-genre-group">None</button>
+        </div>
+
+        <div data-toggle="buttons">
+          <% @genre_groups.each do |genre_group| %>
+              <%= label_tag genre_group, class: "btn btn-default", style: "margin-top: 8px;" do %>
+                <%= check_box_tag "genre_groups[]", genre_group, false, class: "genre-checkbox", data: { behavior: "genre-group" } %><%= genre_group %>
+              <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @genres.any? %>
+        <h2>Genres:</h2>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" data-behavior="select-all-genre">All</button>
+          <button type="button" class="btn btn-info" data-behavior="select-none-genre">None</button>
+        </div>
+
+        <div data-toggle="buttons">
+          <% @genres.each do |genre| %>
+              <%= label_tag genre, class: "btn btn-default", style: "margin-top: 8px;" do %>
+                <%= check_box_tag "genres[]", genre, false, class: "genre-checkbox", data: { behavior: "genre" } %><%= genre %>
+              <% end %>
+          <% end %>
+        </div>
+      <% end %>
 
       <br>
 

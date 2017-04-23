@@ -27,6 +27,9 @@ Rails.application.routes.draw do
 
   resources :band_likes, only: [ :create, :destroy ]
 
+  resources :genre_groups, except: [ :index ]
+  resources :genre_entries, only: [ :create, :destroy ]
+
   get '/chooser', to: "choose#chooser", as: :chooser
   get '/choose', to: "choose#choose", as: :choose
 

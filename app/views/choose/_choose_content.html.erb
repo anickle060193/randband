@@ -1,2 +1,3 @@
 <%= band_image_tag( @band ) %>
 <%= band_external_link_tag( @band ) %>
+<%= content_tag( :em, @band.genres.pluck( :name ).join( ", " ) ) unless @band.genres.empty? %>

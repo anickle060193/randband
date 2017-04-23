@@ -1,0 +1,11 @@
+<% if current_user?( @genre_group.creator ) %>
+  <%= form_for genre_entry, method: :delete, remote: true, html: { class: "genre-entry-form" } do |f| %>
+    <%= hidden_field_tag :genre_group_id, genre_entry.genre_group_id %>
+    <%= genre_entry.genre.name %>
+    <button type="submit" class="btn btn-link" title="Remove <%= genre_entry.genre.name %> Genre" data-disable-with="<span class='glyphicon glyphicon-remove'></span>">
+      <span class="glyphicon glyphicon-remove"></span>
+    </button>
+  <% end %>
+<% else %>
+  <span class="genre-entry"><%= genre_entry.genre.name %></span>
+<% end %>

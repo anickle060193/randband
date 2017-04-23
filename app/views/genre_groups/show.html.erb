@@ -1,0 +1,18 @@
+<% provide( :title, @genre_group.name ) %>
+
+<div class="well">
+  <center>
+    <h1><%= @genre_group.name %></h1>
+    <div data-content="replace">
+      <%= render @genre_group.genre_entries %>
+    </div>
+    <% if current_user?( @genre_group.creator ) %>
+
+      <%= render 'add_genre_form' %>
+      <br/>
+
+      <%= link_to "Edit", edit_genre_group_path( @genre_group ), class: "btn btn-default" %>
+      <%= button_to "Delete", @genre_group, method: :delete, class: "btn btn-danger", form_class: "inline" %>
+    <% end %>
+	</center>
+</div>

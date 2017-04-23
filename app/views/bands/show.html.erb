@@ -4,10 +4,10 @@
   <center>
     <%= band_image_tag( @band ) %>
     <%= band_external_link_tag( @band ) %>
-    <%= content_tag( :em, @band.genres.pluck( :genre ).join( ", " ) ) unless @band.genres.empty? %>
+    <%= content_tag( :em, @band.genres.pluck( :name ).join( ", " ) ) unless @band.genres.empty? %>
     <br>
     <br>
-    <% if current_user?( @band.user ) %>
+    <% if current_user?( @band.creator ) %>
       <%= link_to "Edit", edit_band_link( @band ) %> |
       <%= link_to "Delete", band_url( @band ), method: :delete %>
     <% end %>

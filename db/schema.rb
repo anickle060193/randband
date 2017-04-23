@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170402075640) do
+ActiveRecord::Schema.define(version: 20170421012305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "band_genres", force: :cascade do |t|
+    t.integer  "band_id",    null: false
+    t.integer  "genre_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id", "genre_id"], name: "index_band_genres_on_band_id_and_genre_id", unique: true, using: :btree
+    t.index ["band_id"], name: "index_band_genres_on_band_id", using: :btree
+    t.index ["genre_id"], name: "index_band_genres_on_genre_id", using: :btree
+  end
 
   create_table "band_likes", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -38,12 +48,10 @@ ActiveRecord::Schema.define(version: 20170402075640) do
   end
 
   create_table "genres", force: :cascade do |t|
-    t.text     "genre",      null: false
-    t.integer  "band_id",    null: false
+    t.text     "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["band_id"], name: "index_genres_on_band_id", using: :btree
-    t.index ["genre"], name: "index_genres_on_genre", using: :btree
+    t.index ["name"], name: "index_genres_on_name", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,8 +71,9 @@ ActiveRecord::Schema.define(version: 20170402075640) do
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "band_genres", "bands"
+  add_foreign_key "band_genres", "genres"
   add_foreign_key "band_likes", "bands"
   add_foreign_key "band_likes", "users"
   add_foreign_key "bands", "users"
-  add_foreign_key "genres", "bands"
 end

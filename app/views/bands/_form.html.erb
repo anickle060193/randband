@@ -1,6 +1,6 @@
 <%= form_for @band do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
+  <%= render 'shared/error_messages', object: @band %>
 
   <div class="form-group">
     <%= f.label :name, "Band Name", class: "control-label", data: { required: true } %>
@@ -21,7 +21,7 @@
     <%= f.label :genres, class: "control-label" do %>
       Genres <small class="text-muted">(one per line)</small>
     <% end %>
-    <%= f.text_area :genres, value: format_genres( f.object.genres ), class: "form-control", rows: 10 %>
+    <%= f.text_area :genres, value: @band.genres.map { |g| g.name }.join( "\n" ), class: "form-control", rows: 10 %>
   </div>
 
   <%= f.submit yield( :button_text ), class: "btn btn-primary btn-lg btn-block" %>

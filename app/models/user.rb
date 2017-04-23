@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
 
-  has_many :band_likes, dependent: :destroy
-  has_many :bands, through: :band_likes
+  has_many :band_likes
+  has_many :liked_bands, through: :band_likes, source: :band, dependent: :destroy
+  has_many :created_bands, class_name: "Band"
 
   before_destroy :destroy_band_references
 
@@ -56,15 +57,15 @@ class User < ApplicationRecord
   end
 
   def like( band )
-    bands << band
+    liked_bands << band
   end
 
   def unlike( band )
-    bands.delete( band )
+    liked_bands.destroy( band )
   end
 
   def likes?( band )
-    bands.exists?( band.id )
+    liked_bands.exists?( band.id )
   end
 
   def User.digest( string )

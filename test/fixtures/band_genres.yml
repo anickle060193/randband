@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  band: one
+  genre: one
+  user: one
+
+two:
+  band: two
+  genre: two
+  user: two

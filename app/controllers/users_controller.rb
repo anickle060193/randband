@@ -7,8 +7,8 @@ class UsersController < ApplicationController
   BANDS_PER_PAGE = 7
 
   def show
-    @liked_bands = @user.bands.page( params[ :liked_bands_page ] ).per( BANDS_PER_PAGE )
-    @created_bands = Band.where( user: @user ).page( params[ :created_bands_page ] ).per( BANDS_PER_PAGE )
+    @liked_bands = @user.liked_bands.page( params[ :liked_bands_page ] ).per( BANDS_PER_PAGE )
+    @created_bands = @user.created_bands.page( params[ :created_bands_page ] ).per( BANDS_PER_PAGE )
     if current_user?( @user ) && @user.email.present? && !@user.activated
       flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."
     end
@@ -80,8 +80,8 @@ class UsersController < ApplicationController
     added_count = 0
 
     spotify_bands.each do |spotify_band|
-      unless current_user.bands.find_by( provider: Band::SPOTIFY_PROVIDER, provider_id: spotify_band.id )
-        band = Band.from_spotify_band( spotify_band )
+      unless current_user.liked_bands.find_by( provider: Band::SPOTIFY_PROVIDER, provider_id: spotify_band.id )
+        band = Band.find_or_create_from_spotify_band( spotify_band )
         current_user.like( band )
         added_count += 1
       end

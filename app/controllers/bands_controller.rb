@@ -40,49 +40,51 @@ class BandsController < ApplicationController
   end
 
   def create
-    @band = Band.new( band_params.except( :genres ) )
-    @band.user = current_user
-    @band.provider = Band::CUSTOM_PROVIDER
-    @band.provider_id = SecureRandom.urlsafe_base64
+    Band.transaction do
+      @band = Band.new( band_params.except( :genres ) )
+      @band.creator = current_user
+      @band.provider = Band::CUSTOM_PROVIDER
+      @band.provider_id = SecureRandom.urlsafe_base64
 
-    if @band.save
+      @band.save!
       entered_genres.each do |genre|
-        @band.genres.create( genre: genre )
+        @band.genres << Genre.find_or_create_by!( name: genre )
       end
 
       flash[ :success ] = "Band created!"
-      current_user.bands << @band
+      current_user.like( @band )
       redirect_to band_link( @band )
-    else
-      render :new
     end
+  rescue ActiveRecord::ActiveRecordError
+    render :new
   end
 
   def edit
   end
 
   def update
-    new_genre_names = entered_genres.map { |s| s.downcase }
-    current_genre_names = @band.genres.pluck( :genre )
+    Band.transaction do
+      new_genre_names = entered_genres.map { |s| s.downcase }
+      current_genre_names = @band.genres.pluck( :name )
 
-    @band.genres.where( genre: current_genre_names - new_genre_names ).destroy_all
+      @band.genres.destroy( Genre.where( name: current_genre_names - new_genre_names ) )
 
-    ( new_genre_names - current_genre_names ).each do |genre|
-      @band.genres.create!( genre: genre )
-    end
+      ( new_genre_names - current_genre_names ).each do |genre|
+        @band.genres << Genre.find_or_create_by!( name: genre )
+      end
 
-    if @band.update( band_params.except( :genres ) )
+      @band.update!( band_params.except( :genres ) )
       flash[ :success ] = "Band updated"
-      redirect_back_or band_link( @band )
-    else
-      render :edit
+      redirect_to band_link( @band )
     end
+  rescue ActiveRecord::ActiveRecordError
+    render :edit
   end
 
   def destroy
     @band.destroy!
     flash[ :info ] = "Band deleted"
-    redirect_back_or bands_url
+    redirect_to bands_url
   end
 
   private
@@ -108,7 +110,7 @@ class BandsController < ApplicationController
 
     def correct_user
       if @band.provider == Band::CUSTOM_PROVIDER
-        redirect_back_or band_link( @band ) unless current_user?( @band.user ) || admin?
+        redirect_back_or band_link( @band ) unless current_user?( @band.creator ) || admin?
       else
         redirect_back_or band_link( @band ) unless admin?
       end

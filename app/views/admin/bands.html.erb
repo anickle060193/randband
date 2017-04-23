@@ -27,7 +27,7 @@
         <%= content_tag :td, band.provider_id %>
         <%= content_tag :td, ( image_tag( band.thumbnail ) if band.thumbnail.present? ) %>
         <%= content_tag :td, ( link_to( "[Link]", band.external_url ) if band.external_url.present? ) %>
-        <%= content_tag :td, ( link_to( band.user.username, band.user ) if band.user.present? ) %>
+        <%= content_tag :td, ( link_to( band.creator.username, band.creator ) if band.creator.present? ) %>
         <%= content_tag :td, band.created_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
         <%= content_tag :td, band.updated_at.strftime( "%m/%d/%Y %I:%M%p" ) %>
         <%= content_tag :td, link_to( "Edit", edit_band_link( band ) ) %>

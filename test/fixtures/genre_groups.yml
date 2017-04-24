@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  user: one
+  creator: one
 
 two:
   name: MyString
-  user: two
+  creator: two

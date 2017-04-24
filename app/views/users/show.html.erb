@@ -26,22 +26,22 @@
 
       <%= paginate @liked_bands, param_name: :liked_bands_page %>
     <% else %>
-      No liked bands...
+      <p>No liked bands...</p>
     <% end %>
     <%= link_to "Find Bands", bands_path, class: "btn btn-default btn-block" %>
   </div>
 
   <div class="col-md-4">
-    <% if @created_bands.any? %>
-      <h2>Created Bands</h2>
+    <h2>Created Bands</h2>
 
+    <% if @created_bands.any? %>
       <div class="list-group">
         <%= render partial: "bands/band_compact", collection: @created_bands, as: :band %>
       </div>
 
       <%= paginate @created_bands, param_name: :created_bands_page %>
     <% else %>
-      No created bands...
+      <p>No created bands...</p>
     <% end %>
     <%= link_to "Add Band", new_band_path, class: "btn btn-default btn-block" %>
   </div>
@@ -56,7 +56,7 @@
 
       <%= paginate @genre_groups, param_name: :genre_group_page %>
     <% else %>
-      No created genre groups...
+      <p>No created genre groups...</p>
     <% end %>
     <%= link_to "Add Genre Group", new_genre_group_path, class: "btn btn-default btn-block" %>
   </div>

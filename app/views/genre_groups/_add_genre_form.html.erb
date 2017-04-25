@@ -3,7 +3,12 @@
     <%= form_tag @genre_group.genre_entries.build, remote: true, class: "form-horizontal" do %>
       <%= hidden_field_tag :genre_group_id, @genre_group.id %>
       <div class="input-group">
-        <%= text_field_tag :genre_name, params[ :genre_name ], class: "form-control", placeholder: "Add genre...", autofocus: false, autocomplete: "none" %>
+        <%= text_field_tag :genre_name, params[ :genre_name ], class: "form-control", placeholder: "Add genre...", autofocus: false, autocomplete: "none", list: "genre-list" %>
+        <datalist id="genre-list">
+          <% @genre_names.each do |genre| %>
+            <option value="<%= genre %>">
+          <% end %>
+        </datalist>
         <span class="input-group-btn">
           <button type="submit" class="btn btn-default" title="Add Genre" data-disable-with="<span class='glyphicon glyphicon-plus'></span>">
             <span class="glyphicon glyphicon-plus"></span>

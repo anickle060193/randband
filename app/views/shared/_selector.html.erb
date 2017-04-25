@@ -1,0 +1,12 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-info" data-selector="all" data-selector-select="<%= select %>">All</button>
+  <button type="button" class="btn btn-info" data-selector="none" data-selector-select="<%= select %>">None</button>
+</div>
+
+<div data-toggle="buttons">
+  <% items.each do |item| %>
+      <%= label_tag item, class: "btn btn-default select", style: "margin-top: 8px;" do %>
+        <%= check_box_tag "#{select}[]", item, ( local_assigns[ :checked_items ].present? && local_assigns[ :checked_items ].include?( item ) ), data: { select: select } %><%= item %>
+      <% end %>
+  <% end %>
+</div>

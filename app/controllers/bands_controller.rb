@@ -17,6 +17,7 @@ class BandsController < ApplicationController
     if params[ :search ].present?
       @bands[ Band::CUSTOM_PROVIDER ] = Band.where( provider: Band::CUSTOM_PROVIDER )
                                             .where( "name ILIKE :search", search: "%#{params[ :search ]}%" )
+                                            .order( :name )
                                             .page( params[ :custom_page ] ).per( BANDS_PER_PROVIDER_PER_PAGE )
 
       begin

@@ -4,9 +4,12 @@ class Genre < ApplicationRecord
   has_many :genre_entries
   has_many :genre_groups, through: :genre_entries, dependent: :destroy
 
-  default_scope { order( :name ) }
-
   before_validation { name.downcase! }
 
   validates :name, presence: true, uniqueness: true
+
+  def self.for_user( user )
+    Genre.joins( :bands ).where( band_genres: { band: user.liked_bands } ).distinct
+  end
+
 end

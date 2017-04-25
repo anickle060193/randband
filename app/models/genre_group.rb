@@ -4,8 +4,6 @@ class GenreGroup < ApplicationRecord
   has_many :genres, through: :genre_entries, dependent: :destroy
   has_many :bands, through: :genres
 
-  default_scope { order( :name ) }
-
   before_validation { name.downcase! }
 
   validates :name, presence: true, uniqueness: { scope: :user_id }

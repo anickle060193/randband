@@ -6,8 +6,6 @@ class Band < ApplicationRecord
   has_many :genres, through: :band_genres, dependent: :destroy
   has_many :genre_groups, through: :genres
 
-  default_scope { order( :name ) }
-
   validates :name, presence: true, uniqueness: true
   validates :provider, presence: true
   validates :provider_id, presence: true, uniqueness: { scope: :provider }

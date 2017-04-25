@@ -4,36 +4,12 @@
     <%= form_tag choose_url, method: :get do |f| %>
       <% if @genre_groups.any? %>
         <h2>Genre Groups:</h2>
-
-        <div class="btn-group">
-          <button type="button" class="btn btn-info" data-behavior="select-all-genre-group">All</button>
-          <button type="button" class="btn btn-info" data-behavior="select-none-genre-group">None</button>
-        </div>
-
-        <div data-toggle="buttons">
-          <% @genre_groups.each do |genre_group| %>
-              <%= label_tag genre_group, class: "btn btn-default", style: "margin-top: 8px;" do %>
-                <%= check_box_tag "genre_groups[]", genre_group, false, class: "genre-checkbox", data: { behavior: "genre-group" } %><%= genre_group %>
-              <% end %>
-          <% end %>
-        </div>
+        <%= render partial: "shared/selector", locals: { items: @genre_groups, select: "genre_groups" } %>
       <% end %>
 
       <% if @genres.any? %>
         <h2>Genres:</h2>
-
-        <div class="btn-group">
-          <button type="button" class="btn btn-info" data-behavior="select-all-genre">All</button>
-          <button type="button" class="btn btn-info" data-behavior="select-none-genre">None</button>
-        </div>
-
-        <div data-toggle="buttons">
-          <% @genres.each do |genre| %>
-              <%= label_tag genre, class: "btn btn-default", style: "margin-top: 8px;" do %>
-                <%= check_box_tag "genres[]", genre, false, class: "genre-checkbox", data: { behavior: "genre" } %><%= genre %>
-              <% end %>
-          <% end %>
-        </div>
+        <%= render partial: "shared/selector", locals: { items: @genres, select: "genres" } %>
       <% end %>
 
       <br>

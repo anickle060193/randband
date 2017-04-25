@@ -7,5 +7,6 @@
 //= require matter-js
 //= require url
 //= require holderjs
+//= require selector
 
 //= require_tree .

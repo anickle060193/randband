@@ -7,9 +7,9 @@ class UsersController < ApplicationController
   LIST_GROUP_ITEMS_PER_PAGE = 5
 
   def show
-    @liked_bands = @user.liked_bands.page( params[ :liked_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
-    @created_bands = @user.created_bands.page( params[ :created_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
-    @genre_groups = @user.genre_groups.page( params[ :genre_groups_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
+    @liked_bands = @user.liked_bands.order( :name ).page( params[ :liked_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
+    @created_bands = @user.created_bands.order( :name ).page( params[ :created_bands_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
+    @genre_groups = @user.genre_groups.order( :name ).page( params[ :genre_groups_page ] ).per( LIST_GROUP_ITEMS_PER_PAGE )
     if current_user?( @user ) && @user.email.present? && !@user.activated
       flash.now[ :warning ] = "Account has not been activated. Check your email for the activation link."
     end

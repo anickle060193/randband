@@ -8,8 +8,6 @@ class User < ApplicationRecord
 
   before_destroy :destroy_band_references
 
-  default_scope { order( "LOWER( username )" ) }
-
   before_validation :fix_email
 
   VALID_USERNAME_REGEX = /\A[a-zA-Z0-9]+\z/

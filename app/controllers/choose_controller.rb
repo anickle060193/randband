@@ -14,8 +14,8 @@ class ChooseController < ApplicationController
   end
 
   def chooser
-    @genres = Genre.joins( :bands ).where( band_genres: { band: current_user.liked_bands } ).distinct.pluck( :name )
-    @genre_groups = GenreGroup.joins( :bands ).where( genres: { band_genres: { band: current_user.liked_bands } } ).distinct.pluck( :name )
+    @genres = Genre.for_user( current_user ).order( :name ).pluck( :name )
+    @genre_groups = current_user.genre_groups.order( :name ).pluck( :name )
   end
 
 end
